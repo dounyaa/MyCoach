@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Disponibilite index{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="col-xl-12">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Details du Rendez vous</div>
+                <div class="card-body">
+                    <div>
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (organization name)-->
+                            <div class="col-md-6">
+                               Date du rendez vous : </div>
+                            <div class="col-md-6">
+                                {{ disponibilite.date ? disponibilite.date|date('Y-m-d H:i:s') : '' }}</div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (organization name)-->
+                            <div class="col-md-6">
+                               Duree du rendez vous : </div>
+                            <div class="col-md-6">
+                                {{disponibilite.duree}}</div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (organization name)-->
+                            <div class="col-md-6">
+                                Canal choisi : </div>
+                            <div class="col-md-6">
+                                {{disponibilite.canal}}</div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (organization name)-->
+                            <div class="col-md-6">
+                                Nom et prenom du client : </div>
+                            <div class="col-md-6">
+                                {{user.nom}} {{user.prenom}}</div>
+                        </div>
+                        <div class="row gx-3 mb-3">
+                            <!-- Form Group (organization name)-->
+                            <div class="col-md-6">
+                                Email du client : </div>
+                            <div class="col-md-6">
+                                {{user.email}}</div>
+                        </div>
+
+                    <a class="btn btn-primary mt-3" type="button" href="{{ path('app_disponibilite_index') }}">back to list</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
