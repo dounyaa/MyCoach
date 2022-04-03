@@ -9,7 +9,9 @@
         "regenerator-runtime": "^0.13.2",
         "sass": "^1.49.9",
         "sass-loader": "^12.6.0",
-        "webpack-notifier": "^1.6.0"
+        "webpack-notifier": "^1.6.0",
+        "prettier": "2.0.5",
+        "prettier-plugin-twig-melody": "^0.4.6"
     },
     "license": "UNLICENSED",
     "private": true,

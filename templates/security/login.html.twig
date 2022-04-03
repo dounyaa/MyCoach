@@ -1,29 +1,75 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}
+	Log in!
+{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+	<div class="page-wrapper bg-red p-t-180 p-b-100 font-robo">
+		<div class="wrapper wrapper--w960">
+			<div class="card card-2">
+				<div class="card-body">
+					<h2 class="title">
+						Ravie de vous revoir !
+					</h2>
+					<form method="POST">
+						{% if error %}
+							<div class="alert alert-danger">
+								{{ error.messageKey|trans(error.messageData, 'security') }}
+							</div>
+						{% endif %}
+						{% if app.user %}
+							<div class="mb-3">
+								You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+							</div>
+						{% endif %}
+						<div class="login-input-group">
+							<input id="inputEmail"
+								class="input--style-2"
+								type="email"
+								value="{{ last_username }}"
+								placeholder="Email"
+								name="email"
+								autocomplete="email"
+								required
+								autofocus />
+						</div>
+						<div class="login-row login-row-space">
+							<div class="login-col-2">
+								<div class="login-input-group">
+									<input id="inputPassword"
+										class="input--style-2"
+										type="password"
+										placeholder="Mot de passe"
+										name="password"
+										autocomplete="current-password"
+										required />
+								</div>
+							</div>
+						</div>
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+						<div class="p-t-30 text-center">
+							<button class="btn btn--radius btn--green" type="submit">Se Connecter</button>
+						</div>
+						<div class="p-t-30 text-center">
+							<p>
+								Vous n'avez pas encore de compte ?
+							</p>
+							<a href="{{ path('app_register') }}" class="text-warning">Inscrivez-vous</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
+	<!-- Jquery JS -->
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<!-- Vendor JS -->
+	<script src="vendor/select2/select2.min.js"></script>
+	<script src="vendor/datepicker/moment.min.js"></script>
+	<script src="vendor/datepicker/daterangepicker.js"></script>
 
-        <h1 class="h3 mb-3 font-weight-normal">Ravi de vous revoir !</h1>
-        <label for="inputEmail">adresse e-mail</label>
-        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-        <label for="inputPassword">Mot de passe</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-        <button class="btn btn-primary mt-2" type="submit">Connexion</button>
-    </form>
-</div>
+	<!-- Main JS -->
+	<script src="js/global.js"></script>
 {% endblock %}

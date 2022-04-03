@@ -22,19 +22,29 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
+                'label' => false,
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'input--style-2',
+                    'placeholder' => 'Nom',
                 ]
             ])
             ->add('prenom', textType::class, [
+                'label' => false,
                 'attr' => [
-                    'class' => 'form-control'
-                ]
+                    'class' => 'input--style-2',
+                    'placeholder' => 'Prenom',
+                ], 
+                
             ])
             ->add('roles', ChoiceType::class, [
+                'label' => false,
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'name' => 'class',
+                    'placeholder' => 'Vous etes',
                 ],
+                // 'disabled' => "disabled",
+                // 'selected' => "selected",
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,
@@ -43,24 +53,28 @@ class RegistrationFormType extends AbstractType
                     'Coach' => 'ROLE_COACH'
                 ]
             ])
-            ->add('image', FileType::class, [
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-                'required' => false,
-            ])
+            // ->add('image', FileType::class, [
+            //     'attr' => [
+            //         'class' => 'input--style-2'
+            //     ],
+            //     'required' => false,
+            // ])
             ->add('email', EmailType::class, [
+                'label' => false,
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'input--style-2',
+                    'placeholder' => 'Email',
                 ]
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
+                'label' => false,
                 'mapped' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
-                    'class' => 'form-control'
+                    'class' => 'input--style-2',
+                    'placeholder' => 'Mot de passe',
                 ],
                 'constraints' => [
                     new NotBlank([

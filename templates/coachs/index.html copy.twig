@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Coachs{% endblock %}
+
+{% block body %}
+    <section class='container mt-5 col-lg-5 offset-lg-7'>
+    <form method="get">
+        <div class="col-lg-12 row">
+            <div class="dropdown col-lg-3">
+                <select class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="ville-select" name="ville">
+                    <li><option class="dropdown-item" value="">Ville</option></li>
+                    <li><option class="dropdown-item" value="Paris">Paris</option></li>
+                    <li><option class="dropdown-item" value="Nice">Nice</option></li>
+                    <li><option class="dropdown-item" value="Marseille">Marseille</option></li>
+                    <li><option class="dropdown-item" value="Nimes">Nimes</option></li>
+                    <li><option class="dropdown-item" value="Canne">Canne</option></li>
+                </select>
+            </div>
+            <div class="dropdown col-lg-4">
+                <select class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="programme-select" name="coaching">
+                    <li><option class="dropdown-item" value="">Coaching</option></li>
+                    <li><option class="dropdown-item" value="Domicile">A Domicile</option></li>
+                    <li><option class="dropdown-item" value="Distance">A Distance</option></li>
+                    <li><option class="dropdown-item" value="En Ligne">En Ligne</option></li>
+                    <li><option class="dropdown-item" value="Libre">Libre</option></li>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary col-lg-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                </svg>
+            </button>
+        </div>
+    </form>
+    </section>
+    {# <section class='container mt-5'>
+        <articles class="col-lg-12" >
+            <article class="row ">
+            {% if coachs|length == 0 %}
+                <p>Nous sommes navré, y a aucun coach pour le moment !</p>
+            {% endif %}
+            {% for coach in coachs %}
+                        <div class="col-lg-3 ">
+                            <div class="row" align="center">
+                                <div class="col-lg-12 ">
+                                    {% if coach.image == NULL %}
+                                        <img width="250px" height="250px" src="images/anonymous_user.webp">
+                                    {% else %}
+                                        <img width="250px" height="250px" src="/images/coach/{{ coach.image }}">
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-12">
+                                    <h2>{{ coach.nom }}</h2>
+                                </div>
+                                <div class="col-lg-12">
+                                    <p>{{ coach.prenom }}</p>
+                                </div>
+                                <div class="col-lg-12">
+                                    <p>{{ coach.prenom }}</p>
+                                </div>
+                                <div class="col-lg-12">
+                                    <a href="{{ path('app_coachdeatail', {'id' : coach.id }) }}"><button class="btn btn-success">Consulter</button></a>
+                                </div>
+                            </div>
+                        </div>
+            {% endfor %}
+            </article>
+        </articles>
+    </section> #}
+<div class="container mt-5">
+    <div class="row">
+            {% if coachs|length == 0 %}
+                <p>Nous sommes navré, y a aucun coach pour le moment !</p>
+            {% endif %}
+            {% for coach in coachs %}
+        <div class="col-lg-3">
+            <div class="row" align="center">
+                <div class="card border-0 shadow col-lg-11">
+                {% if coach.image == null %}
+                    <img  class="container mt-4" width="200px" height="250px" src="/images/anonymous_user.webp" alt="...">
+                {% else %}
+                    <img  class="container mt-4" width="200px" height="250px" src="/images/coach/{{ coach.image }}" alt="...">
+                {% endif %}
+                    <div class="card-body p-1-5 p-xl-9 col-lg-12">
+                        <div class="mb-4">
+                            <h3 class="h4 mb-0">{{ coach.nom }} {{ coach.prenom }}</h3>
+                            <span class="text-primary">Coaching {{ coach.coaching }}</span>
+                        </div>
+                        <a  href="{{ path('app_coachdeatail', {'id' : coach.id }) }}"><button class="btn btn-primary">Consulter !</button></a>
+                    </div>
+                </div>            
+            </div>
+        </div>
+            {% endfor %}
+    </div>
+</div>
+{% endblock %}

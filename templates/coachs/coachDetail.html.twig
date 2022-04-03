@@ -3,95 +3,157 @@
 {% block title %}Hello CoachdeatailController!{% endblock %}
 
 {% block body %}
-<section class="">
-<div class="container mt-5">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-7 col-lg-4 mb-5 mb-lg-0 wow fadeIn">
-            <div class="card border-0 shadow">
-                {% if coach.image == null %}
-                    <img  class="container mt-4" width="300px" height="300px" src="/images/anonymous_user.webp" alt="...">
+
+    <!-- ChoseUs Section Begin -->
+    <section class="choseus-section spad">
+
+    </section>
+    <!-- ChoseUs Section End -->
+
+    <!-- About US Section Begin -->
+    <section class="aboutus-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 p-0">
+                    {% if coach.image == null %}
+                    <div class="about-video set-bg" data-setbg="/images/anonymous_user.webp">
+                    </div>
                 {% else %}
-                    <img  class="container mt-4" width="300px" height="300px" src="/images/coach/{{ coach.image }}" alt="...">
+                    <div class="about-video set-bg" data-setbg="/images/coach/{{ coach.image }}">
+                    </div>
                 {% endif %}
-                <div class="card-body p-1-9 p-xl-5">
-                    <div class="mb-4">
-                        <h3 class="h4 mb-0">{{ coach.nom }} {{ coach.prenom }}</h3>
-                        <span class="text-primary">Coaching {{ coach.coaching }}</span>
-                    </div>
-                    <ul class="list-unstyled mb-4">
-                        <li class="mb-3"><a href="#!"><i class="far fa-envelope display-25 me-3 text-secondary"></i>{{ coach.email }}</a></li>
-                        <li class="mb-3"><a href="#!"><i class="fas fa-map-marker-alt display-25 me-3 text-secondary"></i>{{ coach.ville }}</a></li>
-                    </ul>
-                    <ul class="social-icon-style2 ps-0">
-                        <li class="btn" type="button" ><a href="#!" ><i class="fab fa-facebook-f"></i></a></li>
-                        <li class="btn" type="button"><a href="#!"><i class="fab fa-twitter"></i></a></li>
-                        <li class="btn" type="button"><a href="#!"><i class="fab fa-youtube"></i></a></li>
-                        <li class="btn" type="button"><a href="#!"><i class="fab fa-linkedin-in"></i></a></li>
-                    </ul>
-                    <a href="{{ path("app_rendezvous", {'id': coach.id})}}"><button class="btn btn-primary">Prendre un rendez-vous !</button></a>
                 </div>
-            </div>
-        </div>
-        <div class="col-lg-8">
-            <div class="ps-lg-1-6 ps-xl-5">
-                <div class="mb-5 wow fadeIn">
-                    <div class="text-start mb-1-6 wow fadeIn">
-                        <h2 class="h1 mb-0 text-primary">Description</h2>
-                    </div>
-                    <p>{{ coach.description }}</p>
-                </div>
-                <div class="mb-5 wow fadeIn">
-                    <div class="text-start mb-1-6 wow fadeIn">
-                        <h2 class="mb-0 text-primary">Programmes</h2>
-                    </div>
-                        <div class="row mt-n4">
-                        {% if programmes|length == 0 %}
-                            <p>ce coach n'a aucun programme en ligne</p>
-                        {% endif %}
-                        {% for programme in programmes %}
-                            <div class="col-sm-6 col-xl-6 mt-4">
-                                <div class="card text-center border-0 rounded-3 shadow">
-                                    <div class="card-body">
-                                    {% if programme.image == null %}
-                                        <img class="mb-4" with="150px" height="150px" src="/images/programme_defaut.jpeg" alt="">
-                                    {% else %}
-                                        <img class="mb-4" with="200px" height="200px" src="/images/programme/{{ programme.image }}" alt="">
-                                    {% endif %}
-                                        <h3 class="h5 mb-3">{{ programme.nom }}</h3>
-                                        <p class="mb-0">{{programme.description}}</p>
-                                        <a class="btn btn-primary mt-3" type="button" href="{{ path('app_programme_detail', {'id' : programme.id }) }}">Consulter</a>
+                <div class="col-lg-6 p-0">
+                    <div class="about-text">
+                        <div class="section-title">
+                            <h2>{{ coach.nom }} {{ coach.prenom }}</h2>
+                            <span>Coaching {{ coach.coaching }}</span>
+                        </div>
+                        <div class="at-desc">
+                            <p>{{ coach.description }}</p>
+                        </div>
+                        <div class="about-bar">
+                            <div class="section-title">
+                                <span>About me</span>
+                                <div class="list-unstyled mt-4">
+                                    <div class="ts_text">
+                                        <p><i class="fa  fa-envelope-o "></i>{{ coach.email }}</p>
+                                        <p><i class="fa fa-map"></i>{{ coach.ville }}</p>
+                                    </div>
+                                    <div class="list-unstyled mt-4">
+                                        <a href="#!" ><i class="fa fa-facebook-f"></i></a>
+                                        <a href="#!"><i class="fa fa-twitter"></i></a>
+                                        <a href="#!"><i class="fa fa-instagram"></i></a>
+                                        <a href="#!"><i class="fa  fa-envelope-o"></i></a>
                                     </div>
                                 </div>
                             </div>
-                        {% endfor %}
+                            <div class="ab-item">
+                                <a href="{{ path("app_rendezvous", {'id': coach.id})}}"><button class="primary-btn btn-normal appoinment-btn">Prendre un rendez-vous !</button></a>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- About US Section End -->
+
+    <!-- Testimonial Section Begin -->
+    <section class="testimonial-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <span>Testimonial</span>
+                        <h2>Our cilent say</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="ts_slider owl-carousel">
+                <div class="ts_item">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <div class="ti_pic">
+                                <img src="/img/testimonial/testimonial-1.jpg" alt="">
+                            </div>
+                            <div class="ti_text">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt<br /> ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices
+                                    gravida. Risus commodo<br /> viverra maecenas accumsan lacus vel facilisis.</p>
+                                <h5>Marshmello Gomez</h5>
+                                <div class="tt-rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ts_item">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <div class="ti_pic">
+                                <img src="/img/testimonial/testimonial-2.jpg" alt="">
+                            </div>
+                            <div class="ti_text">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt<br /> ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices
+                                    gravida. Risus commodo<br /> viverra maecenas accumsan lacus vel facilisis.</p>
+                                <h5>Marshmello Gomez</h5>
+                                <div class="tt-rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Testimonial Section End -->
+
+    <!-- Get In Touch Section Begin -->
+    <div class="gettouch-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="gt-text">
+                        <i class="fa fa-map-marker"></i>
+                        <p>333 Middle Winchendon Rd, Rindge,<br/> NH 03461</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="gt-text">
+                        <i class="fa fa-mobile"></i>
+                        <ul>
+                            <li>125-711-811</li>
+                            <li>125-668-886</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="gt-text email">
+                        <i class="fa fa-envelope"></i>
+                        <p>Support.gymcenter@gmail.com</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-</section>
-<section class='container mt-4'>
-    <div class="list-group border-0 shadow">
-    {% for comment in commentaire %}
-        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ comment.auteur }}</h5>
-            <small>{{ comment.createdAt|date('d-m-Y') }}</small>
-            </div>
-            <p class="mb-1">{{ comment.contenu }}</p>
-        </a>
-    {% endfor %}
-    <form class="list-group-item list-group-item-action flex-column align-items-start" method="Post">
-        <div class="mb-3">
-            <input type="text" name="description" class="form-control" id="addComment" placeholder="add comment">
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary mb-3">ajouter commentaire</button>
-        </div>
-    </form>
-    </div>
-</section>
+    <!-- Get In Touch Section End -->
 
+
+
+
+
+</body>
 
 {% endblock %}

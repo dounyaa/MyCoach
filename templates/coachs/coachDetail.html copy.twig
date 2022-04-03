@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CoachdeatailController!{% endblock %}
+
+{% block body %}
+<section class="">
+<div class="container mt-5">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-7 col-lg-4 mb-5 mb-lg-0 wow fadeIn">
+            <div class="card border-0 shadow">
+                {% if coach.image == null %}
+                    <img  class="container mt-4" width="300px" height="300px" src="/images/anonymous_user.webp" alt="...">
+                {% else %}
+                    <img  class="container mt-4" width="300px" height="300px" src="/images/coach/{{ coach.image }}" alt="...">
+                {% endif %}
+                <div class="card-body p-1-9 p-xl-5">
+                    <div class="mb-4">
+                        <h3 class="h4 mb-0">{{ coach.nom }} {{ coach.prenom }}</h3>
+                        <span class="text-primary">Coaching {{ coach.coaching }}</span>
+                    </div>
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-3"><a href="#!"><i class="far fa-envelope display-25 me-3 text-secondary"></i>{{ coach.email }}</a></li>
+                        <li class="mb-3"><a href="#!"><i class="fas fa-map-marker-alt display-25 me-3 text-secondary"></i>{{ coach.ville }}</a></li>
+                    </ul>
+                    <ul class="social-icon-style2 ps-0">
+                        <li class="btn" type="button" ><a href="#!" ><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="btn" type="button"><a href="#!"><i class="fab fa-twitter"></i></a></li>
+                        <li class="btn" type="button"><a href="#!"><i class="fab fa-youtube"></i></a></li>
+                        <li class="btn" type="button"><a href="#!"><i class="fab fa-linkedin-in"></i></a></li>
+                    </ul>
+                    <a href="{{ path("app_rendezvous", {'id': coach.id})}}"><button class="btn btn-primary">Prendre un rendez-vous !</button></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="ps-lg-1-6 ps-xl-5">
+                <div class="mb-5 wow fadeIn">
+                    <div class="text-start mb-1-6 wow fadeIn">
+                        <h2 class="h1 mb-0 text-primary">Description</h2>
+                    </div>
+                    <p>{{ coach.description }}</p>
+                </div>
+                <div class="mb-5 wow fadeIn">
+                    <div class="text-start mb-1-6 wow fadeIn">
+                        <h2 class="mb-0 text-primary">Programmes</h2>
+                    </div>
+                        <div class="row mt-n4">
+                        {% if programmes|length == 0 %}
+                            <p>ce coach n'a aucun programme en ligne</p>
+                        {% endif %}
+                        {% for programme in programmes %}
+                            <div class="col-sm-6 col-xl-6 mt-4">
+                                <div class="card text-center border-0 rounded-3 shadow">
+                                    <div class="card-body">
+                                    {% if programme.image == null %}
+                                        <img class="mb-4" with="150px" height="150px" src="/images/programme_defaut.jpeg" alt="">
+                                    {% else %}
+                                        <img class="mb-4" with="200px" height="200px" src="/images/programme/{{ programme.image }}" alt="">
+                                    {% endif %}
+                                        <h3 class="h5 mb-3">{{ programme.nom }}</h3>
+                                        <p class="mb-0">{{programme.description}}</p>
+                                        <a class="btn btn-primary mt-3" type="button" href="{{ path('app_programme_detail', {'id' : programme.id }) }}">Consulter</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<section class='container mt-4'>
+    <div class="list-group border-0 shadow">
+    {% for comment in commentaire %}
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ comment.auteur }}</h5>
+            <small>{{ comment.createdAt|date('d-m-Y') }}</small>
+            </div>
+            <p class="mb-1">{{ comment.contenu }}</p>
+        </a>
+    {% endfor %}
+    <form class="list-group-item list-group-item-action flex-column align-items-start" method="Post">
+        <div class="mb-3">
+            <input type="text" name="description" class="form-control" id="addComment" placeholder="add comment">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3">ajouter commentaire</button>
+        </div>
+    </form>
+    </div>
+</section>
+
+
+{% endblock %}
