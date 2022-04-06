@@ -3,39 +3,55 @@
 {% block title %}Hello ProgrammeController!{% endblock %}
 
 {% block body %}
-<section class='container mt-5'>
-    {% if addButton %}
-        <div class="float-right">
-            <a class="btn btn-primary offset-lg-9 my-auto" href="{{ path('app_add_programme') }}" role="button">Ajouter un programme</a>
-        </div>
-    {% endif %}
-    <div class="container mt-5">
-        <div class="row">
-            {% if programme|length == 0 %}
-                <p>Nous sommes navré, y a aucun programme pour le moment !</p>
-            {% endif %}
-            {% for prog in programme %}
-                <div class="col-lg-3">
-                    <div class="row" align="center">
-                        <div class="card border-0 shadow col-lg-11">
-                        {% if prog.image == null %}
-                            <img  class="container mt-4" width="200px" height="250px" src="/images/programme_defaut.jpeg" alt="...">
-                        {% else %}
-                            <img  class="container mt-4" width="200px" height="250px" src="/images/programme/{{ prog.image }}" alt="...">
-                        {% endif %}
-                            <div class="card-body p-1-5 p-xl-9 col-lg-12">
-                                <div class="mb-4">
-                                    <h3 class="h4 mb-0">{{ prog.nom }}</h3>
-                                    <span class="text-primary">{{ prog.description }}</span>
-                                </div>
-                                <a  href="{{ path('app_programme_detail', {'id' : prog.id }) }}"><button class="btn btn-primary">Consulter !</button></a>
+    <!-- Blog Section Begin -->
+    <section class="blog-section spad">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-8 p-0">
+                    {% if programmes|length == 0 %}
+                        <p>Nous sommes navré, y a aucun programme pour le moment !</p>
+                    {% endif %}
+                    {% for programme in programmes %}
+                        <div class="blog-item">
+                            <div class="bi-pic">
+                            {% if programme.image == null %}
+                                <img src="/images/programme_defaut.jpeg" alt="">
+                            {% else %}
+                                <img src="/images/programme/{{ programme.image }}" alt="">
+                            {% endif %}
                             </div>
-                        </div>            
+                            <div class="bi-text">
+                                <h5><a href="{{ path('app_programme_detail', {'id' : programme.id }) }}">{{ programme.nom }}</a></h5>
+                                <ul>
+                                    <li>by </li>
+                                    <li>Aug,15, 2019</li>
+                                    <li>20 Comment</li>
+                                </ul>
+                                <p>{{ programme.description }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-lg-4 col-md-8 p-0">
+                    <div class="sidebar-option">
+                        <div class="so-categories">
+                            <h5 class="title">Categories</h5>
+                            <ul>
+                            {% for categorie in categories %}
+                                <li><a href="#">{{ categorie }} <span>12</span></a></li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                        <div>
+                            {% if addButton %}
+                                <a class="primary-btn btn-normal appoinment-btn" href="{{ path('app_add_programme') }}" role="button">Ajouter un programme</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
-    </div>
     </section>
+    <!-- Blog Section End -->
 
 {% endblock %}

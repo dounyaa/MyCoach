@@ -1,109 +1,128 @@
 {% extends 'base.html.twig' %}
 
-
-{% block title %}{% endblock %}
-   
-{% block body %}
-<h1>hgh</h1>
-<div id="calendrier"></div>
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-        {{ form_start(form) }}
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#myModal').modal('toggle')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" name="calendar_id" id="calendar_id" />
-        {{ form_widget(form) }}
-      </div>
-      <div class="modal-footer">
-      
-        <button type="submit" class="btn btn-primary">Save</button>
-        <button type="submit" class="btn btn-primary" id="delete-btn">delete</button>
-      </div>
-        {{ form_end(form) }}
-    </div>
-  </div>
-</div> 
-
+{% block title %}
 
 {% endblock %}
 
+{% block body %}
+	<section class="class-timetable-section spad">
+		<div id="calendrier"></div>
+
+		<!-- Modal -->
+		<div class="modal fade"
+			id="myModal"
+			tabindex="-1"
+			role="dialog"
+			aria-labelledby="exampleModalLongTitle"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					{{ form_start(form) }}
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">
+							Modal title
+						</h5>
+						<button type="button"
+							class="close"
+							data-dismiss="modal"
+							aria-label="Close"
+							onclick="$('#myModal').modal('toggle')">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="calendar_id" id="calendar_id" />
+						{{ form_widget(form) }}
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Save</button>
+						<button type="submit" class="btn btn-primary" id="delete-btn">delete</button>
+					</div>
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
 {% block javascripts %}
-    <script>
-    function convertDate(inputFormat) {
-      function pad(s) { return (s < 10) ? '0' + s : s; }
+	<script>
+		function convertDate(inputFormat) {
+      function pad(s) {
+        return s < 10 ? '0' + s : s
+      }
+
       var d = new Date(inputFormat)
-      return [d.getFullYear(), pad(d.getMonth()+1), pad(d.getDate())].join('-')
+      return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-')
     }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            let calendarElt = document.querySelector('#calendrier')
+    document.addEventListener('DOMContentLoaded', function () {
+      let calendarElt = document.querySelector('#calendrier')
 
-            let calendar = new FullCalendar.Calendar(calendarElt, {
-                initialView: 'timeGridWeek',
-                customButtons: {
-                    myCustomButton: {
-                    text: 'Ajouter',
-                    click: function() {
+      let calendar = new FullCalendar.Calendar(calendarElt, {
+        customButtons: {
+          myCustomButton: {
+            text: 'Ajouter',
+            click: function () {
+              $('#calendar_id').val('')
+              $('#calendar_title').val('')
 
-                    $("#calendar_id").val("");
-                    $("#calendar_title").val("");
+              $('#calendar_start_date').val('')
+              $('#calendar_start_time_hour').val('')
+              $('#calendar_start_time_minute').val('')
 
-                    $("#calendar_start_date").val("");
-                    $("#calendar_start_time_hour").val("");
-                    $("#calendar_start_time_minute").val("");
+              $('#calendar_end_date').val('')
+              $('#calendar_end_time_hour').val('')
+              $('#calendar_end_time_minute').val('')
 
-                    $("#calendar_end_date").val("");
-                    $("#calendar_end_time_hour").val("");
-                    $("#calendar_end_time_minute").val("");
+              $('#myModal').modal('show')
+              $('#delete-btn').hide()
+            },
+          },
+        },
+        headerToolbar: {
+          start: '',
+          center: 'title',
+          end: 'prev,next today myCustomButton',
+        },
+        events: {{ data|raw }},
 
-                    $('#myModal').modal('show');
-                    $("#delete-btn").hide();
-                    }
-                    }
-                },
-                headerToolbar: {
-                    start: 'prev,next today myCustomButton',
-                    center: 'title',
-                    end: 'dayGridMonth,timeGridWeek'
-                },
-                events: {{ data|raw }},
+        viewDidMount: function(info) {
+          console.log("viewSkeletonRender");
+          calendarElt.querySelectorAll('.fc-button').forEach((button) => {
+            console.log(button);
+              button.classList.add('primary-btn', 'btn-normal', 'appoinment-btn');
+              button.classList.remove('fc-button', 'fc-button-primary');
+          });
+        },
 
-                 eventClick: function(info) {
-                    let id = info.event.id;
-                    let title = info.event.title;
-                    let start = info.event.start;
-                    let end = info.event.end;
+        eventClick: function (info) {
+          let id = info.event.id
+          let title = info.event.title
+          let start = info.event.start
+          let end = info.event.end
 
-                    $("#calendar_id").val(id);
-                    $("#calendar_title").val(title);
+          $('#calendar_id').val(id)
+          $('#calendar_title').val(title)
 
-                    $("#calendar_start_date").val(convertDate(start));
-                    $("#calendar_start_time_hour").val(start.getHours());
-                    $("#calendar_start_time_minute").val(start.getMinutes());
+          $('#calendar_start_date').val(convertDate(start))
+          $('#calendar_start_time_hour').val(start.getHours())
+          $('#calendar_start_time_minute').val(start.getMinutes())
 
-                    $("#calendar_end_date").val(convertDate(end));
-                    $("#calendar_end_time_hour").val(end.getHours());
-                    $("#calendar_end_time_minute").val(end.getMinutes());
+          $('#calendar_end_date').val(convertDate(end))
+          $('#calendar_end_time_hour').val(end.getHours())
+          $('#calendar_end_time_minute').val(end.getMinutes())
 
-                    // Save to edit
-                    $("#delete-btn").show();
+          // Save to edit $("#delete-btn").show();
 
-                    $("form[name=calendar]").attr('action', '/calendrier/' + id);
-                    $("#delete-btn").attr('formaction', '/calendrier/' + id + '/delete');
+          $('form[name=calendar]').attr('action', '/calendrier/' + id)
+          $('#delete-btn').attr('formaction', '/calendrier/' + id + '/delete')
 
-                    $('#myModal').modal('show');
-                }
-            })
+          $('#myModal').modal('show')
+        },
+      })
 
-            calendar.render()
-        });
-    </script>
+      calendar.render()
+    });
+	</script>
 {% endblock %}

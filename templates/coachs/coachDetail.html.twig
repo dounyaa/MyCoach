@@ -35,21 +35,20 @@
                         <div class="about-bar">
                             <div class="section-title">
                                 <span>About me</span>
-                                <div class="list-unstyled mt-4">
-                                    <div class="ts_text">
-                                        <p><i class="fa  fa-envelope-o "></i>{{ coach.email }}</p>
-                                        <p><i class="fa fa-map"></i>{{ coach.ville }}</p>
-                                    </div>
-                                    <div class="list-unstyled mt-4">
-                                        <a href="#!" ><i class="fa fa-facebook-f"></i></a>
-                                        <a href="#!"><i class="fa fa-twitter"></i></a>
-                                        <a href="#!"><i class="fa fa-instagram"></i></a>
-                                        <a href="#!"><i class="fa  fa-envelope-o"></i></a>
+                                <div class="list-unstyled">
+                                    <div class="gt-text mt-3">
+                                        <p><i class="fa fa-map-marker"></i>{{ coach.ville }}</p>
+                                        <p><i class="fa fa-mobile"></i>125-711-811</p>
+                                        <p><i class="fa fa-envelope"></i>{{ coach.email }}</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="ab-item">
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                 <a href="{{ path("app_rendezvous", {'id': coach.id})}}"><button class="primary-btn btn-normal appoinment-btn">Prendre un rendez-vous !</button></a>
+                                {% else %}
+                                <a href="{{ path("app_login")}}"><button class="primary-btn btn-normal appoinment-btn">Prendre un rendez-vous !</button></a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -65,23 +64,27 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <span>Testimonial</span>
-                        <h2>Our cilent say</h2>
+                        <span>Commentaire</span>
+                        <h2>les avis de nos Client</h2>
                     </div>
                 </div>
             </div>
             <div class="ts_slider owl-carousel">
+            {% for comment in commentaire %}
                 <div class="ts_item">
                     <div class="row">
                         <div class="col-lg-12 text-center">
                             <div class="ti_pic">
-                                <img src="/img/testimonial/testimonial-1.jpg" alt="">
+                            {% if comment.auteurImage == null %}
+                                <img src="/images/anonymous_user.webp" alt="">
+                	        {% else %}
+                                <img src="/images/coach/{{ comment.auteurImage }}" alt="">
+                	        {% endif %}
                             </div>
                             <div class="ti_text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt<br /> ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices
-                                    gravida. Risus commodo<br /> viverra maecenas accumsan lacus vel facilisis.</p>
-                                <h5>Marshmello Gomez</h5>
+                                <p>{{ comment.contenu }}</p>
+                                <h5>{{ comment.auteur }}</h5>
+                                <span>{{ comment.createdAt|date('d-m-Y') }}</span>
                                 <div class="tt-rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -93,61 +96,31 @@
                         </div>
                     </div>
                 </div>
-                <div class="ts_item">
-                    <div class="row">
-                        <div class="col-lg-12 text-center">
-                            <div class="ti_pic">
-                                <img src="/img/testimonial/testimonial-2.jpg" alt="">
-                            </div>
-                            <div class="ti_text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt<br /> ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices
-                                    gravida. Risus commodo<br /> viverra maecenas accumsan lacus vel facilisis.</p>
-                                <h5>Marshmello Gomez</h5>
-                                <div class="tt-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            {% endfor %}
             </div>
         </div>
     </section>
     <!-- Testimonial Section End -->
 
     <!-- Get In Touch Section Begin -->
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     <div class="gettouch-section">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="gt-text">
-                        <i class="fa fa-map-marker"></i>
-                        <p>333 Middle Winchendon Rd, Rindge,<br/> NH 03461</p>
+            <div class="row flex">
+                    <div class="leave-comment col-lg-12">
+                        <form class="row" method="Post">
+                            <div class="col-lg-9">
+                                <input type="text" name="description" id="addComment" placeholder="Comment">
+                            </div>
+                            <div class="col-lg-3">
+                                <button type="submit">Ajouter Commentaire</button>
+                            </div>
+                        </form>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="gt-text">
-                        <i class="fa fa-mobile"></i>
-                        <ul>
-                            <li>125-711-811</li>
-                            <li>125-668-886</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="gt-text email">
-                        <i class="fa fa-envelope"></i>
-                        <p>Support.gymcenter@gmail.com</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+    {% endif %}
     <!-- Get In Touch Section End -->
 
 

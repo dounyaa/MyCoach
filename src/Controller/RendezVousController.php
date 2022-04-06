@@ -24,7 +24,7 @@ class RendezVousController extends AbstractController
     #[Route('/{id}/rendezvous', name: 'app_rendezvous')]
     public function index(User $coach, Security $security): Response
     {
-        
+        $this->denyAccessUnlessGranted('ROLE_CLIENT');
         return $this->render('rendez_vous/index.html.twig', [
             'disponibilites' => $coach->getDisponibilites(),
         ]);
@@ -33,6 +33,7 @@ class RendezVousController extends AbstractController
     #[Route('/reserver/{id}', name: 'app_rendezvous_reserver', methods: ['POST'])]
     public function reserver(Request $request,Security $security, Disponibilite $disponibilite, DisponibiliteRepository $disponibiliteRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_CLIENT');
         $this->security = $security;
         $user = $this->security->getUser();
 
@@ -49,6 +50,7 @@ class RendezVousController extends AbstractController
     #[Route('/mesrendezvous', name: 'app_mes_rendezvous')]
     public function mesRendezvous(Security $security): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_CLIENT');
         $this->security = $security;
         $user = $this->security->getUser();
         
@@ -60,6 +62,7 @@ class RendezVousController extends AbstractController
     #[Route('/mesrendezvous/{id}/annuler', name: 'app_mes_rendezvous_annuler')]
     public function annuler(Request $request, Security $security, Disponibilite $disponibilite): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_CLIENT');
         $this->security = $security;
         $user = $this->security->getUser();
 

@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
-
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AddProgrammeType extends AbstractType
 {
@@ -18,24 +18,39 @@ class AddProgrammeType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
+                'label' => false,
                 'attr' => [
-                    'class' => 'form-control'
+                    'placeholder' => 'Titre',
                 ]
             ])
-            ->add('description', TextareaType::class, [
+            ->add('description', TextareaType::class,[
+                'label' => false,
                 'attr' => [
-                    'class' => 'form-control'
+                    'placeholder' => 'Description',
                 ]
             ])
             ->add('image', filetype::class, [
-                'attr' => [
-                    'class' => 'form-control'
-                ],
                 'required' => false,
-            ])
-            ->add('contenu', CKEditorType::class, [
+                'label' => false,
                 'attr' => [
-                    'class' => 'form-control'
+                ]
+            ])
+            ->add('categorie', ChoiceType::class, [
+                'label' => false,
+                'choices' => [
+                    'Perte du poids' => 'Perte du poids',
+                    'Yoga' => 'Yoga',
+                    'Cardio' => 'Cardio',
+                    'Nutrition' => 'Nutrition',
+                    'Musculation' => 'Musculation',
+                ],
+                'attr' => [
+                    'placeholder' => 'Categorie',
+                ]
+            ])
+            ->add('contenu', CKEditorType::class,[
+                'label' => false,
+                'attr' => [
                 ]
             ])
         ;

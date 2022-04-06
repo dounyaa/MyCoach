@@ -3,55 +3,40 @@
 {% block title %}Disponibilite index{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="col-lg-4">
-            <div class="row mt-n4">
-            {% for disponibilite in disponibilites %}
-            <div class="col-sm-6 col-xl-6 mt-4">
-            <div class="card-body border-0 shadow">
-                <div class="mb-2">
-                    <div class="text-start">
-                        <h2 class="h5 mb-0 text-primary">Date</h2>
+
+<section class="blog-section spad">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-8 p-0">
+                {% for disponibilite in disponibilites %}
+                    <div class="blog-item">
+                        <div class="bi-text">
+                            <h5><a href="">Rendez-vous de {{ disponibilite.duree }}</a></h5>
+                            <ul>
+                                <li>{{ disponibilite.date ? disponibilite.date|date('Y-m-d') : '' }}</li>
+                                <li>{{ disponibilite.date ? disponibilite.date|date('H:i:s') : '' }}</li>
+                                <li>{{ disponibilite.canal }}</li>
+                                <p>{{ disponibilite.etat }}</p>
+                            </ul>
+                            {% if disponibilite.etat == "disponible" %}
+                                <a class="primary-btn btn-normal appoinment-btn" type="button" href="{{ path('app_disponibilite_edit', {'id': disponibilite.id}) }}">modifier</a>
+                            {% else %}
+                            <form method="post" action="{{ path('app_disponibilite_detail', {'id': disponibilite.id}) }}">
+                                <input type="hidden" name="detail" value="{{ disponibilite.id }}">
+                                <button class="primary-btn btn-normal appoinment-btn">Voir plus de detail</button>
+                            </form>                
+                            {% endif %}
+                        </div>
                     </div>
-                    <p>{{ disponibilite.date ? disponibilite.date|date('Y-m-d H:i:s') : '' }}</p>
-                </div>
-                <div class="mb-2">
-                    <div class="text-start">
-                        <h2 class="h5 mb-0 text-primary">Durée</h2>
-                    </div>
-                    <p>{{ disponibilite.duree }}</p>
-                </div>
-                <div class="mb-2">
-                    <div class="text-start">
-                        <h2 class="h5 mb-0 text-primary">Etat</h2>
-                    </div>
-                    <p>{{ disponibilite.etat }}</p>
-                </div>
-                <div class="mb-2">
-                    <div class="text-start">
-                        <h2 class="h5 mb-0 text-primary">canal</h2>
-                    </div>
-                    <p>{{ disponibilite.canal }}</p>
-                </div>
-                <div class="mb-2">
-                {% if disponibilite.etat == "disponible" %}
-                    <a class="btn btn-primary" type="button" href="{{ path('app_disponibilite_edit', {'id': disponibilite.id}) }}">edit</a>
                 {% else %}
-                <form method="post" action="{{ path('app_disponibilite_detail', {'id': disponibilite.id}) }}">
-                    <input type="hidden" name="detail" value="{{ disponibilite.id }}">
-                    <button class="btn btn-primary mt-2">Voir plus de detail</button>
-                </form>                
-                {% endif %}
-                </div>
-                </div> 
-            </div>
-            {% else %}
                 <div class="mb-5 wow fadeIn">
                     <h2>no records found</h2>
                 </div>
-        {% endfor %}
+                {% endfor %}
+                </div>
+                
             </div>
-        <a class="btn btn-primary mt-3" type="button" href="{{ path('app_profil') }}">Create new</a>
-    </div>
-</div>
+        </div>
+        <a class="primary-btn btn-normal appoinment-btn " type="button" href="{{ path('app_profil') }}">Ajouter</a>
+    </section>
 {% endblock %}

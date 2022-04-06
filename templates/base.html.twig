@@ -39,6 +39,8 @@
 		<!-- Main CSS -->
 		<link href="/css/main.css" rel="stylesheet" media="all" />
 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css" integrity="sha256-5veQuRbWaECuYxwap/IOE/DAwNxgm4ikX7nrgsqYp88=" crossorigin="anonymous">
+
 		{% block stylesheets %}
 			{{ encore_entry_link_tags('app') }}
 			<style>
@@ -109,12 +111,13 @@
 
 								{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 									{% if is_granted('ROLE_COACH') %}
-										<li><a href="./services.html">Mes programmes</a></li>
-										<li><a href="./team.html">Mes Disponibilité</a></li>
+										<li><a href="{{ path('app_mesprogrammes') }}">Mes programmes</a></li>
+										<li><a href="{{ path('app_disponibilite_index') }}">Mes Disponibilité</a></li>
+										<li><a href="{{ path('app_calendar') }}">Calendrier</a></li>
 									{% endif %}
 
 									{% if is_granted('ROLE_CLIENT') %}
-										<li><a href="./team.html">Mes rendez-vous</a></li>
+										<li><a href="{{ path('app_mes_rendezvous') }}">Mes rendez-vous</a></li>
 									{% endif %}
 								{% endif %}
 
@@ -138,9 +141,13 @@
 							<div class="to-search search-switch">
 								<i class="fa fa-search"></i>
 							</div>
-							<div class="to-social">
+							<div class="login-menu">
 								{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 								<a href="{{ path('app_profil')}}"><i class="fa fa-user-circle-o fa-2x"></i></a>
+								<ul class="dropdown">
+										<li><a href="{{ path('app_profil')}}">PROFILE</a></li>
+										<li><a href="{{ path('app_logout') }}">DECONNEXION</a></li>
+									</ul>
 								{% else %}
 								<a href="{{ path('app_login') }}">CONNEXION</a>
 								{% endif %}
@@ -277,6 +284,8 @@
 		<script src="/js/jquery.slicknav.js"></script>
 		<script src="/js/owl.carousel.min.js"></script>
 		<script src="/js/main.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js"></script>
+
 
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}

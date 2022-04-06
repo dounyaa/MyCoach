@@ -24,32 +24,48 @@ class ProgrammeController extends AbstractController
     #[Route('/', name: 'app_programme')]
     public function index(): Response
     {
+        
         $repo = $this->em->getRepository(Programme::class);
-        $programme = $repo->findAll();
+        $programmes = $repo->findAll();
+
+        $categories = array();
+        foreach ($programmes as $programme) 
+        {
+            array_push($categories, $programme->getCategorie());
+        }  
 
         return $this->render('programme/index.html.twig', [
-            'programme' => $programme,
-            'addButton' => false
+            'programmes' => $programmes,
+            'addButton' => false,
+            'categories' => $categories
         ]);
     }
 
     #[Route('/moi', name: 'app_mesprogrammes')]
     public function mesProgrammes(Security $security): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_COACH');
         $this->security = $security;
         $coach = $this->security->getUser();
-        
-        $programme = $coach->getProgramme();
+        $programmes = $coach->getProgramme();
+
+        $categories = array();
+        foreach ($programmes as $programme) 
+        {
+            array_push($categories, $programme->getCategorie());
+        } 
 
         return $this->render('programme/index.html.twig', [
-            'programme' => $programme,
-            'addButton' => true
+            'programmes' => $programmes,
+            'addButton' => true,
+            'categories' => $categories
         ]);
     }
 
     #[Route('/add/{errors}', methods: ['GET'], name: 'app_add_programme')]
     public function addProgrammeShow(Request $request, String $errors = ""): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_COACH');
         $programme = new Programme();
         $form = $this->createForm(AddProgrammeType::class, $programme);
         $form->handleRequest($request);
@@ -64,6 +80,7 @@ class ProgrammeController extends AbstractController
     
     public function addProgramme(Request $request, Security $security, SluggerInterface $slugger): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_COACH');
         $programme = new Programme();
         $form = $this->createForm(AddProgrammeType::class, $programme);
         $form->handleRequest($request);
@@ -113,9 +130,11 @@ class ProgrammeController extends AbstractController
     {
         $repo = $this->em->getRepository(Programme::class);
         $programme = $repo->find($id);
+        $coach = $programme->getUser();
 
         return $this->render('programme/programmeDetail.html.twig', [
             'programme' => $programme,
+            'coach' => $coach,
         ]);
     }
 }

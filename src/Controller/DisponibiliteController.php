@@ -19,6 +19,10 @@ class DisponibiliteController extends AbstractController
     #[Route('/', name: 'app_disponibilite_index', methods: ['GET'])]
     public function index(Security $security): Response
     {
+        
+        if($this->denyAccessUnlessGranted('ROLE_COACH')){
+            return $this->redirectToRoute('denyAccess/404.html.twig');
+        }
         $this->security = $security;
         $coach = $this->security->getUser();
         

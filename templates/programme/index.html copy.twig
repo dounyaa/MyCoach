@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProgrammeController!{% endblock %}
+
+{% block body %}
+<section class='container mt-5'>
+    {% if addButton %}
+        <div class="float-right">
+            <a class="btn btn-primary offset-lg-9 my-auto" href="{{ path('app_add_programme') }}" role="button">Ajouter un programme</a>
+        </div>
+    {% endif %}
+    <div class="container mt-5">
+        <div class="row">
+            {% if programme|length == 0 %}
+                <p>Nous sommes navré, y a aucun programme pour le moment !</p>
+            {% endif %}
+            {% for prog in programme %}
+                <div class="col-lg-3">
+                    <div class="row" align="center">
+                        <div class="card border-0 shadow col-lg-11">
+                        {% if prog.image == null %}
+                            <img  class="container mt-4" width="200px" height="250px" src="/images/programme_defaut.jpeg" alt="...">
+                        {% else %}
+                            <img  class="container mt-4" width="200px" height="250px" src="/images/programme/{{ prog.image }}" alt="...">
+                        {% endif %}
+                            <div class="card-body p-1-5 p-xl-9 col-lg-12">
+                                <div class="mb-4">
+                                    <h3 class="h4 mb-0">{{ prog.nom }}</h3>
+                                    <span class="text-primary">{{ prog.description }}</span>
+                                </div>
+                                <a  href="{{ path('app_programme_detail', {'id' : prog.id }) }}"><button class="btn btn-primary">Consulter !</button></a>
+                            </div>
+                        </div>            
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    </section>
+
+{% endblock %}

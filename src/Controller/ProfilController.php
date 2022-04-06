@@ -37,7 +37,7 @@ class ProfilController extends AbstractController
         $editImageForm= $this->createFormBuilder(['method' => 'POST'])
                 ->add('image', FileType::class, [
                     'attr' => [
-                        'class' => 'form-control', 
+                        'class' => 'form-image', 
                         'id' => 'image',
                         'onChange' => 'submit()'
                     ]
@@ -60,41 +60,58 @@ class ProfilController extends AbstractController
 
         $editInfoForm= $this->createFormBuilder($user, ['method' => 'GET'])
                 ->add('nom', TextType::class, [
+                    'label' => false,
                     'attr' => [
-                        'class' => 'form-control', 
-                        
-                    ]])
+                        'placeholder' => 'Nom'
+                    ]
+                    ])
                 ->add('prenom', TextType::class, [
+                    'label' => false,
                     'attr' => [
-                        'class' => 'form-control', 
-                        
-                    ]])
+                        'placeholder' => 'Prenom'
+                    ]
+                        ])
                 ->add('email', EmailType::class, [
+                    'label' => false,
                     'attr' => [
-                        'class' => 'form-control', 
-                        
-                    ]])
+                        'placeholder' => 'Email'
+                    ]
+                    ])
                 ->add('coaching', ChoiceType::class, [
-                    'attr' => [
-                        'class' => 'form-control', 
-                        
-                    ],'choices'  => [
+                    'choices'  => [
                         '' => '',
                         'Domicile' => 'Domicile',
                         'Distance' => 'Distance',
                         'En Ligne' => 'En Ligne',
                         'Libre' => 'Libre',
-                    ],])
+                    ],'attr' => [
+                        'placeholder' => 'Coaching',
+                    ],
+                    'required' => false,
+                    'label' => false,
+                    ])
 
-                ->add('ville', TextType::class, [
+                ->add('ville', ChoiceType::class, [
                     'attr' => [
-                        'class' => 'form-control'],
+                        'placeholder' => 'Ville'
+                    ],'choices'  => [
+                        '' => '',
+                        'Paris' => 'Paris',
+                        'Marseille' => 'Marseille',
+                        'Nice' => 'Nice',
+                        'Nante' => 'Nante',],
+                        'required' => false,
+                        'label' => false,
                         ])
                 ->add('description', TextareaType::class, [
                     'attr' => [
-                        'class' => 'form-control', 
-                        
-                    ]])
+                        'cols' => '85',
+                         'rows' => '5',
+                         'placeholder' => 'Description'
+                        ],
+                        'required' => false,
+                        'label' => false,
+                    ])
                 ->getForm();
 
         if ($request->isMethod('GET'))

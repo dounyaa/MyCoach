@@ -26,6 +26,9 @@ class Commentaire
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'commentaire')]
     private $user;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $auteurImage;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +78,18 @@ class Commentaire
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAuteurImage(): ?string
+    {
+        return $this->auteurImage;
+    }
+
+    public function setAuteurImage(?string $auteurImage): self
+    {
+        $this->auteurImage = $auteurImage;
 
         return $this;
     }

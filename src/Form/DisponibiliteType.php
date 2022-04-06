@@ -17,12 +17,12 @@ class DisponibiliteType extends AbstractType
         $builder
             ->add('date', DateTimeType::class, [
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => ''
                 ]
             ])
             ->add('canal', ChoiceType::class, [
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => ''
                 ],
                 'choices' => [
                     '' => '',
@@ -33,7 +33,7 @@ class DisponibiliteType extends AbstractType
             ])
             ->add('duree', ChoiceType::class, [
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => ''
                 ],
                 'choices' => [
                     '' => '',

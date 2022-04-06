@@ -28,6 +28,9 @@ class Programme
     #[ORM\Column(type: 'text')]
     private $contenu;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $categorie;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +92,18 @@ class Programme
     public function setContenu(string $contenu): self
     {
         $this->contenu = $contenu;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?string
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(string $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }

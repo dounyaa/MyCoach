@@ -3,7 +3,59 @@
 {% block title %}Hello ProgrammeDetailController!{% endblock %}
 
 {% block body %}
-<section class='container mt-5'>
-    <div>{{ programme.contenu|raw }}</div>
-</section>
+<!-- Blog Details Hero Section Begin -->
+    <section class="blog-details-hero set-bg" data-setbg="/img/blog/details/details-hero.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 p-0 m-auto">
+                    <div class="bh-text">
+                        <h3>{{programme.nom}}</h3>
+                        <ul>
+                            <li>by {{coach.nom}} {{coach.prenom}}</li>
+                            <li>Aug,15, 2019</li>
+                            <li>20 Comment</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Blog Details Hero Section End -->
+
+    <!-- Blog Details Section Begin -->
+    <section class="blog-details-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 p-0 m-auto">
+                    <div class="blog-details-text">
+                        <div class="blog-details-desc">
+                            <p>{{ programme.contenu|raw }}</p>
+                        </div>
+                        </div>
+                        <div class="blog-details-author mt-7">
+                            <div class="ba-pic">
+                                {% if coach.image == null %}
+                                <img src="/images/anonymous_user.webp" alt="">
+                                {% else %}
+                                <img src="/images/coach/{{ coach.image }}" alt="">
+                                {% endif %}
+                            </div>
+                            <div class="ba-text">
+                                <h5>{{coach.nom}} {{coach.prenom}}</h5>
+                                <p>{{coach.description}}</p>
+                                <div class="bp-social">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-google-plus"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                    <a href="#"><i class="fa fa-youtube-play"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Blog Details Section End -->
 {% endblock %}

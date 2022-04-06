@@ -60,12 +60,16 @@ class CoachsController extends AbstractController
         $CurrentUser = $this->security->getUser();
         
         if(!empty($CurrentUser)){
-            $userName = $CurrentUser->getNom();
+            $nom = $CurrentUser->getNom();
+            $prenom = $CurrentUser->getPrenom();
+            $userName = $nom .' '.$prenom;
+            $userImage = $CurrentUser->getImage();
         }
 
         if ($request->request->count() > 0){
 
             $commentaire->setAuteur($userName);
+            $commentaire->setAuteurImage($userImage);
             $commentaire->setContenu($request->request->get('description'));
             $commentaire->setCreatedAt(new \DateTime());
 
