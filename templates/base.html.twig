@@ -111,7 +111,7 @@
 
 								{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 									{% if is_granted('ROLE_COACH') %}
-										<li><a href="{{ path('app_mesprogrammes') }}">Mes programmes</a></li>
+										<li><a href="{{ path('app_programme', {'categorie' : 'moi' }) }}">Mes programmes</a></li>
 										<li><a href="{{ path('app_disponibilite_index') }}">Mes Disponibilité</a></li>
 										<li><a href="{{ path('app_calendar') }}">Calendrier</a></li>
 									{% endif %}

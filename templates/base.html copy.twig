@@ -55,7 +55,7 @@
                         </li>
                         <li class="nav-item">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_COACH') %}
-                            <a class="nav-link" href="{{ path('app_mesprogrammes')}}">Mes Programmes</a>
+                            <a class="nav-link" href="{{ path('app_programme_detail', {'categorie' : 'moi' }) }}">Mes Programmes</a>
                         {% endif %}
                         </li>
                         <li class="nav-item">

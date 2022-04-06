@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-lg-8 p-0">
                 {% for disponibilite in disponibilites %}
-                {% if disponibilite.etat == "disponible" %}
+                {% if disponibilite.etat | lower == "disponible" %}
                     <div class="blog-item">
                         <div class="bi-text">
                             <h5><a href="">Rendez-vous de {{ disponibilite.duree }}</a></h5>

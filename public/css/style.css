@@ -3445,3 +3445,80 @@ a.fc-daygrid-event.fc-daygrid-dot-event.fc-event.fc-event-start.fc-event-end.fc-
 a.fc-daygrid-event.fc-daygrid-dot-event.fc-event.fc-event-start.fc-event-end.fc-event-past:hover {
 	cursor: pointer;
 }
+
+/* Datetime inputs */
+.datetime-inputs {
+	display: flex;
+	justify-content: space-between;
+}
+
+.datetime-inputs input,
+.datetime-inputs select
+{
+	display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+.datetime-inputs > input
+{
+	flex: 3;
+    margin-right: 10px;
+}
+
+.datetime-inputs > div select:nth-of-type(1)
+{
+	margin-right: 5px;
+}
+
+.datetime-inputs > div
+{
+	flex: 2;
+	display: flex;
+	font-size: 25px;
+    font-weight: 800;
+}
+
+.datetime-inputs > div select:nth-of-type(2)
+{
+	margin-left: 5px;
+}
+
+#myModal div#calendar div {
+    margin-bottom: 15px;
+}
+
+/* Disponibilité details */
+.disponibilite-detail .card-body {
+	background: #151515;
+    color: white;
+}
+.disponibilite-detail .card-header {
+	background-color: rgb(243 97 1);
+	color: #ffffff;
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.disponibilite-detail .card.mb-4 {
+	border: 1px solid rgb(243 97 1); 
+	font-size: 14px;
+    font-family: "Muli", sans-serif;
+    color: #a9a9a9;
+    font-weight: 400;
+    line-height: 24px;
+    margin: 0 0 15px 0;
+}
+
+.disponibilite-detail .label {
+	font-weight: 700;
+}

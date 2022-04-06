@@ -22,6 +22,9 @@ class Calendar
     #[ORM\Column(type: 'datetime')]
     private $end;
 
+    #[ORM\Column(type: 'string', length: 100)]
+    private $reservation;
+
     #[ORM\Column(type: 'string', length: 7)]
     private $background_color;
 
@@ -66,6 +69,17 @@ class Calendar
         return $this;
     }
 
+    public function getReservation(): ?string
+    {
+        return $this->reservation;
+    }
+
+    public function setReservation(string $reservation): self
+    {
+        $this->reservation = $reservation;
+
+        return $this;
+    }
 
     public function getBackgroundColor(): ?string
     {

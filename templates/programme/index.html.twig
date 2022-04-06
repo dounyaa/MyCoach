@@ -1,57 +1,93 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProgrammeController!{% endblock %}
+{% block title %}
+	Hello ProgrammeController!
+{% endblock %}
 
 {% block body %}
-    <!-- Blog Section Begin -->
-    <section class="blog-section spad">
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-lg-8 p-0">
-                    {% if programmes|length == 0 %}
-                        <p>Nous sommes navré, y a aucun programme pour le moment !</p>
-                    {% endif %}
-                    {% for programme in programmes %}
-                        <div class="blog-item">
-                            <div class="bi-pic">
-                            {% if programme.image == null %}
-                                <img src="/images/programme_defaut.jpeg" alt="">
-                            {% else %}
-                                <img src="/images/programme/{{ programme.image }}" alt="">
-                            {% endif %}
-                            </div>
-                            <div class="bi-text">
-                                <h5><a href="{{ path('app_programme_detail', {'id' : programme.id }) }}">{{ programme.nom }}</a></h5>
-                                <ul>
-                                    <li>by </li>
-                                    <li>Aug,15, 2019</li>
-                                    <li>20 Comment</li>
-                                </ul>
-                                <p>{{ programme.description }}</p>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="col-lg-4 col-md-8 p-0">
-                    <div class="sidebar-option">
-                        <div class="so-categories">
-                            <h5 class="title">Categories</h5>
-                            <ul>
-                            {% for categorie in categories %}
-                                <li><a href="#">{{ categorie }} <span>12</span></a></li>
-                            {% endfor %}
-                            </ul>
-                        </div>
-                        <div>
-                            {% if addButton %}
-                                <a class="primary-btn btn-normal appoinment-btn" href="{{ path('app_add_programme') }}" role="button">Ajouter un programme</a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Blog Section End -->
+	<!-- Blog Section Begin -->
+	<section class="blog-section spad">
+		<div class="container mt-5">
+			<div class="row">
+				<div class="col-lg-8 p-0">
+					{% if (programmes|length) == 0 %}
+						<p>
+							Nous sommes navré, y a aucun programme pour le moment !
+						</p>
+					{% endif %}
+					{% for programme in programmes %}
+						<div class="blog-item">
+							<div class="bi-pic">
+								{% if programme.image == null %}
+									<img src="/images/programme_defaut.jpeg" alt="" />
+								{% else %}
+									<img src="/images/programme/{{ programme.image }}" alt="" />
+								{% endif %}
+							</div>
+							<div class="bi-text">
+								<h5>
+									<a href="{{
+										path(
+											'app_programme_detail',
+											{
+												id: programme.id
+											}
+										)
+										}}">
+										{{ programme.nom }}
+									</a>
+								</h5>
+								<ul>
+									<li>by {{ programme.user.nom }} {{ programme.user.prenom }} </li>
+									<li>{{ programme.categorie }}</li>
+								</ul>
+								<p>
+									{{ programme.description }}
+								</p>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="col-lg-4 col-md-8 p-0">
+					<div class="sidebar-option">
+                        {% if not isMesProgrammes %}
+						<div class="so-categories">
+							<h5 class="title">
+								Categories
+							</h5>
+							<ul>
+								{% for categorie, nbProgramme in categories %}
+									<li>
+										<a href="{{
+											path(
+												'app_programme',
+												{
+													categorie: categorie
+												}
+											)
+											}}">
+											{{ categorie }} <span>{{ nbProgramme }}</span>
+										</a>
+									</li>
+								{% endfor %}
 
+								<li><a href="{{ path('app_programme') }}">Voir Tous</a></li>
+							</ul>
+						</div>
+						{% endif %}
+						<div>
+							{% if isMesProgrammes %}
+								<a class="primary-btn btn-normal appoinment-btn"
+									href="{{ path('app_add_programme') }}"
+									role="button">
+									Ajouter un programme
+								</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Blog Section End -->
 {% endblock %}

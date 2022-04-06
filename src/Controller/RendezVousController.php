@@ -39,7 +39,7 @@ class RendezVousController extends AbstractController
 
         if ($request->request->get('reserve') > 0) {
             $disponibilite->setUser($user);
-            $disponibilite->setEtat('Reserver');
+            $disponibilite->setEtat('Reservé');
             $disponibiliteRepository->add($disponibilite);
             return $this->redirectToRoute('app_mes_rendezvous');
         }

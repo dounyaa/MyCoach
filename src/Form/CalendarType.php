@@ -2,8 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\Calendar;
+use App\Entity\Disponibilite;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -16,19 +17,14 @@ class CalendarType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class,[
-                'attr' => [
-                    'class' => 'form-control'
-                ]
-            ])
-            ->add('start', DateTimeType::class, [
+            ->add('date', DateTimeType::class, [
                 'date_widget' => 'single_text',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'datetime-inputs'
                 ]
             ])
-            ->add('end', DateTimeType::class, [
-                'date_widget' => 'single_text',
+            ->add('duree', ChoiceType::class, [
+                'choices' => ['30 Min' => "30", '1 H' => "60", '1 H 30 Min' => '90'],
                 'attr' => [
                     'class' => 'form-control'
                 ]
@@ -38,7 +34,7 @@ class CalendarType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Calendar::class,
+            'data_class' => Disponibilite::class,
         ]);
     }
 }

@@ -12,54 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Form\AddProgrammeType;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-
+use Symfony\Component\Validator\Constraints\Length;
 
 #[Route('/programme')]
 class ProgrammeController extends AbstractController
 {
     public function __construct(EntityManagerInterface $em) {
         $this->em = $em;
-    }
-
-    #[Route('/', name: 'app_programme')]
-    public function index(): Response
-    {
-        
-        $repo = $this->em->getRepository(Programme::class);
-        $programmes = $repo->findAll();
-
-        $categories = array();
-        foreach ($programmes as $programme) 
-        {
-            array_push($categories, $programme->getCategorie());
-        }  
-
-        return $this->render('programme/index.html.twig', [
-            'programmes' => $programmes,
-            'addButton' => false,
-            'categories' => $categories
-        ]);
-    }
-
-    #[Route('/moi', name: 'app_mesprogrammes')]
-    public function mesProgrammes(Security $security): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_COACH');
-        $this->security = $security;
-        $coach = $this->security->getUser();
-        $programmes = $coach->getProgramme();
-
-        $categories = array();
-        foreach ($programmes as $programme) 
-        {
-            array_push($categories, $programme->getCategorie());
-        } 
-
-        return $this->render('programme/index.html.twig', [
-            'programmes' => $programmes,
-            'addButton' => true,
-            'categories' => $categories
-        ]);
     }
 
     #[Route('/add/{errors}', methods: ['GET'], name: 'app_add_programme')]
@@ -117,7 +76,9 @@ class ProgrammeController extends AbstractController
             $this->em->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_mesprogrammes');
+            return $this->redirectToRoute('app_programme', [
+                'categorie' => 'moi'
+            ]);
         }
 
         return $this->redirectToRoute('app_add_programme', [
@@ -125,7 +86,7 @@ class ProgrammeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_programme_detail')]
+    #[Route('/detail/{id}', name: 'app_programme_detail')]
     public function programmeDetail(int $id): Response
     {
         $repo = $this->em->getRepository(Programme::class);
@@ -135,6 +96,54 @@ class ProgrammeController extends AbstractController
         return $this->render('programme/programmeDetail.html.twig', [
             'programme' => $programme,
             'coach' => $coach,
+        ]);
+    }
+
+    #[Route('/{categorie}', name: 'app_programme')]
+    public function index(Security $security, $categorie = ''): Response
+    {
+        $repo = $this->em->getRepository(Programme::class);
+
+        $isMesProgrammes = ($categorie == 'moi');
+
+        $programmes = array();
+        if(empty($categorie))
+        {
+            $programmes= $repo->findAll();
+        }
+        else if($categorie == 'moi')
+        {
+            $this->denyAccessUnlessGranted('ROLE_COACH');
+            $this->security = $security;
+            $coach = $this->security->getUser();
+            $programmes = $coach->getProgramme();
+        }
+        else
+        {
+            $programmes = $repo->findBy(array('categorie' => $categorie));
+        }
+
+        $categories = array();
+        foreach ($programmes as $programme) 
+        {
+            $programmeCategory = $programme->getCategorie();
+
+            if(!in_array($programmeCategory, $categories))
+            {
+                array_push($categories, $programmeCategory);
+            }
+        }
+
+        $categoriesCompteur = array();
+        foreach ($categories as $categorie) 
+        {
+            $categoriesCompteur[$categorie] = count($repo->findBy(array('categorie' => $categorie)));
+        }
+
+        return $this->render('programme/index.html.twig', [
+            'programmes' => $programmes,
+            'isMesProgrammes' => $isMesProgrammes,
+            'categories' => $categoriesCompteur
         ]);
     }
 }

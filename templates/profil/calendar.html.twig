@@ -18,26 +18,28 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					{{ form_start(form) }}
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLongTitle">
-							Modal title
-						</h5>
-						<button type="button"
-							class="close"
-							data-dismiss="modal"
-							aria-label="Close"
-							onclick="$('#myModal').modal('toggle')">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<input type="hidden" name="calendar_id" id="calendar_id" />
-						{{ form_widget(form) }}
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">Save</button>
-						<button type="submit" class="btn btn-primary" id="delete-btn">delete</button>
-					</div>
+            <fieldset id="disponibilite_fieldset">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                  Ajout/Modification de la disponibilité
+                </h5>
+                <button type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  onclick="$('#myModal').modal('toggle')">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <input type="hidden" name="calendar_id" id="calendar_id" />
+                {{ form_widget(form) }}
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary" id="delete-btn">delete</button>
+              </div>
+            </fieldset>
 					{{ form_end(form) }}
 				</div>
 			</div>
@@ -67,16 +69,16 @@
               $('#calendar_id').val('')
               $('#calendar_title').val('')
 
-              $('#calendar_start_date').val('')
-              $('#calendar_start_time_hour').val('')
-              $('#calendar_start_time_minute').val('')
-
-              $('#calendar_end_date').val('')
-              $('#calendar_end_time_hour').val('')
-              $('#calendar_end_time_minute').val('')
+              $('#calendar_date_date').val('')
+              $('#calendar_date_time_hour').val('')
+              $('#calendar_date_time_minute').val('')
+              
+              $('#calendar_duree').val('')
 
               $('#myModal').modal('show')
-              $('#delete-btn').hide()
+              $('#delete-btn').hide();
+
+              $('form[name=calendar]').attr('action', '/calendrier');
             },
           },
         },
@@ -97,32 +99,38 @@
         },
 
         eventClick: function (info) {
-          let id = info.event.id
-          let title = info.event.title
-          let start = info.event.start
-          let end = info.event.end
+          let id = info.event.id;
+          let title = info.event.title;
+          let start = info.event.start;
+          let duree = (info.event.end - info.event.start) / (1000 * 60);
 
-          $('#calendar_id').val(id)
-          $('#calendar_title').val(title)
+          $('#calendar_id').val(id);
 
-          $('#calendar_start_date').val(convertDate(start))
-          $('#calendar_start_time_hour').val(start.getHours())
-          $('#calendar_start_time_minute').val(start.getMinutes())
+          if(start)
+          {
+            $('#calendar_date_date').val(convertDate(start))
+            $('#calendar_date_time_hour').val(start.getHours())
+            $('#calendar_date_time_minute').val(start.getMinutes())
+          }
+         
+          if(duree)
+          {
+            $('#calendar_duree option[value=' + duree + ']').attr('selected', 'selected');
+          }
+          
+          $('form[name=calendar]').attr('action', '/calendrier/' + id);
+          $('#delete-btn').attr('formaction', '/calendrier/' + id + '/delete');
 
-          $('#calendar_end_date').val(convertDate(end))
-          $('#calendar_end_time_hour').val(end.getHours())
-          $('#calendar_end_time_minute').val(end.getMinutes())
+          if(title.toLowerCase() == 'reservé')
+          {
+            $('#disponibilite_fieldset').attr('disabled', 'disabled');
+          }
 
-          // Save to edit $("#delete-btn").show();
-
-          $('form[name=calendar]').attr('action', '/calendrier/' + id)
-          $('#delete-btn').attr('formaction', '/calendrier/' + id + '/delete')
-
-          $('#myModal').modal('show')
+          $('#myModal').modal('show');
         },
       })
 
-      calendar.render()
+      calendar.render();
     });
 	</script>
 {% endblock %}

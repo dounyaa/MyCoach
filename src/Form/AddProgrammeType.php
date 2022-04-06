@@ -26,7 +26,7 @@ class AddProgrammeType extends AbstractType
             ->add('description', TextareaType::class,[
                 'label' => false,
                 'attr' => [
-                    'placeholder' => 'Description',
+                    'placeholder' => 'Résumé du programme',
                 ]
             ])
             ->add('image', filetype::class, [

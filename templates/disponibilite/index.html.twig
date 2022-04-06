@@ -18,8 +18,8 @@
                                 <li>{{ disponibilite.canal }}</li>
                                 <p>{{ disponibilite.etat }}</p>
                             </ul>
-                            {% if disponibilite.etat == "disponible" %}
-                                <a class="primary-btn btn-normal appoinment-btn" type="button" href="{{ path('app_disponibilite_edit', {'id': disponibilite.id}) }}">modifier</a>
+                            {% if disponibilite.etat | lower == "disponible" %}
+                                <a class="primary-btn btn-normal appoinment-btn" type="button" href="{{ path('app_calendar') }}">modifier</a>
                             {% else %}
                             <form method="post" action="{{ path('app_disponibilite_detail', {'id': disponibilite.id}) }}">
                                 <input type="hidden" name="detail" value="{{ disponibilite.id }}">
