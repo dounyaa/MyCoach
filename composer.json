@@ -95,8 +95,7 @@
         },
         "post-install-cmd": [
             "@auto-scripts",
-            "php bin/console doctrine:migrations:migrate",
-            "npm run build"
+            "php bin/console doctrine:migrations:migrate"
         ],
         "post-update-cmd": [
             "@auto-scripts"
