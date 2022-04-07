@@ -102,7 +102,7 @@
 					<div class="col-lg-6">
 						<nav class="nav-menu">
 							<ul>
-								<li class="active"><a href="{{ path('app_home') }}">Accueil</a></li>
+								<li><a href="{{ path('app_home') }}">Accueil</a></li>
 								<li><a href="{{ path('app_coachs') }}">Coachs</a></li>
 								<li><a href="{{ path('app_programme') }}">Programmes</a></li>
 
@@ -122,9 +122,6 @@
 					</div>
 					<div class="col-lg-3">
 						<div class="top-option">
-							<div class="to-search search-switch">
-								<i class="fa fa-search"></i>
-							</div>
 							<div class="login-menu">
 								{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 								<a href="{{ path('app_profil')}}"><i class="fa fa-user-circle-o fa-2x"></i></a>
