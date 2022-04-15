@@ -87,7 +87,7 @@
           center: 'title',
           end: 'prev,next today myCustomButton',
         },
-        events: {{ data|raw }},
+        events: {{ data is not empty ? data | raw : '[]' | raw }},
 
         viewDidMount: function(info) {
           console.log("viewSkeletonRender");

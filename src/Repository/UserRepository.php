@@ -69,7 +69,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         return $this->createQueryBuilder('u')
             ->andWhere('u.roles = :role')
-            ->setParameter('role', '"' . $role . '"')
+            ->setParameter('role', $role)
             ->getQuery()
             ->getResult();
     }
@@ -132,7 +132,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $query = $this->createQueryBuilder('u')
             ->andWhere('u.roles = :role')
-            ->setParameter('role', '"' . $role . '"');
+            ->setParameter('role', $role);
 
             if($ville != null)
             {

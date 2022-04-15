@@ -66,24 +66,21 @@
 			</div>
 			<nav class="canvas-menu mobile-menu">
 				<ul>
-					<li><a href="./index.html">Home</a></li>
-					<li><a href="./about-us.html">About Us</a></li>
-					<li><a href="./classes.html">Classes</a></li>
-					<li><a href="./services.html">Services</a></li>
-					<li><a href="./team.html">Our Team</a></li>
-					<li>
-						<a href="#">Pages</a>
-						<ul class="dropdown">
-							<li><a href="./about-us.html">About us</a></li>
-							<li><a href="./class-timetable.html">Classes timetable</a></li>
-							<li><a href="./bmi-calculator.html">Bmi calculate</a></li>
-							<li><a href="./team.html">Our team</a></li>
-							<li><a href="./gallery.html">Gallery</a></li>
-							<li><a href="./blog.html">Our blog</a></li>
-							<li><a href="./404.html">404</a></li>
-						</ul>
-					</li>
-					<li><a href="./contact.html">Contact</a></li>
+					<li><a href="{{ path('app_home') }}">Accueil</a></li>
+					<li><a href="{{ path('app_coachs') }}">Coachs</a></li>
+					<li><a href="{{ path('app_programme') }}">Programmes</a></li>
+
+					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+						{% if is_granted('ROLE_COACH') %}
+							<li><a href="{{ path('app_programme', {'categorie' : 'moi' }) }}">Mes programmes</a></li>
+							<li><a href="{{ path('app_disponibilite_index') }}">Mes Disponibilité</a></li>
+							<li><a href="{{ path('app_calendar') }}">Calendrier</a></li>
+						{% endif %}
+
+						{% if is_granted('ROLE_CLIENT') %}
+							<li><a href="{{ path('app_mes_rendezvous') }}">Mes rendez-vous</a></li>
+						{% endif %}
+					{% endif %}
 				</ul>
 			</nav>
 			<div id="mobile-menu-wrap"></div>
@@ -105,7 +102,7 @@
 					<div class="col-lg-6">
 						<nav class="nav-menu">
 							<ul>
-								<li class="active"><a href="{{ path('app_home') }}">Accueil</a></li>
+								<li><a href="{{ path('app_home') }}">Accueil</a></li>
 								<li><a href="{{ path('app_coachs') }}">Coachs</a></li>
 								<li><a href="{{ path('app_programme') }}">Programmes</a></li>
 
@@ -120,27 +117,11 @@
 										<li><a href="{{ path('app_mes_rendezvous') }}">Mes rendez-vous</a></li>
 									{% endif %}
 								{% endif %}
-
-								{# <li>
-									<a href="#">Pages</a>
-									<ul class="dropdown">
-										<li><a href="./about-us.html">About us</a></li>
-										<li><a href="./class-timetable.html">Classes timetable</a></li>
-										<li><a href="./bmi-calculator.html">Bmi calculate</a></li>
-										<li><a href="./team.html">Our team</a></li>
-										<li><a href="./gallery.html">Gallery</a></li>
-										<li><a href="./blog.html">Our blog</a></li>
-										<li><a href="./404.html">404</a></li>
-									</ul>
-								</li> #}
 							</ul>
 						</nav>
 					</div>
 					<div class="col-lg-3">
 						<div class="top-option">
-							<div class="to-search search-switch">
-								<i class="fa fa-search"></i>
-							</div>
 							<div class="login-menu">
 								{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 								<a href="{{ path('app_profil')}}"><i class="fa fa-user-circle-o fa-2x"></i></a>
