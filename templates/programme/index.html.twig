@@ -15,6 +15,7 @@
 							Nous sommes navré, y a aucun programme pour le moment !
 						</p>
 					{% endif %}
+					
 					{% for programme in programmes %}
 						<div class="blog-item">
 							<div class="bi-pic">
@@ -44,6 +45,17 @@
 								<p>
 									{{ programme.description }}
 								</p>
+								{% if isMesProgrammes %}
+									<a class="btn primary-btn btn-normal appoinment-btn mx-1"
+										href="{{ path('app_edit_programme', {'id' : programme.id }) }}"
+										role="button">
+										Modifier
+									</a>
+									<form method="post" action="{{ path('app_delete_programme', {'id': programme.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ programme.id) }}">
+										<button class="btn primary-btn btn-normal appoinment-btn mx-1">Delete</button>
+									</form>
+								{% endif %}
 							</div>
 						</div>
 					{% endfor %}

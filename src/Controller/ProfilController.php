@@ -2,12 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Calendar;
 use App\Entity\Disponibilite;
-use App\Entity\User;
 use App\Form\CalendarType;
 use App\Form\DisponibiliteType;
-use App\Repository\CalendarRepository;
 use App\Repository\DisponibiliteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -49,7 +46,7 @@ class ProfilController extends AbstractController
         if ($request->isMethod('POST')) {
             $editImageForm->handleRequest($request);
 
-            if ($editImageForm->isSubmitted() && $editImageForm->isValid()) {
+            if ($editImageForm->isSubmitted() && $editImageForm->isValid() && $editImageForm->get('image')->getData()) {
                 $this->removeUserImage($user);
                 $this->setUserImage($editImageForm, $user, $slugger);
                 $entityManager->persist($user);
@@ -192,7 +189,6 @@ class ProfilController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $disponibilite->setCanal('Zoom');
             $disponibilite->setCoach($coach);
             $disponibilite->setEtat('Disponible');
 
@@ -216,7 +212,7 @@ class ProfilController extends AbstractController
             ];
             $data = json_encode($rdvs);
         }
-
+        $data = json_encode($rdvs);
         return $this->renderForm('profil/calendar.html.twig', [
             'calendar' => $disponibilite,
             'form' => $form,
@@ -249,24 +245,4 @@ class ProfilController extends AbstractController
 
         return $this->redirectToRoute('app_calendar', [], Response::HTTP_SEE_OTHER);
     }
-
-    // #[Route('/profil', name: 'app_disponibilite_new', methods: ['GET', 'POST'])]
-    // public function disponibilite(Request $request, DisponibiliteRepository $disponibiliteRepository): Response
-    // {
-    //     $disponibilite = new Disponibilite();
-    //     $disponibiliteform = $this->createForm(DisponibiliteType::class, $disponibilite);
-    //     $disponibiliteform->handleRequest($request);
-
-    //     if ($disponibiliteform->isSubmitted() && $disponibiliteform->isValid()) {
-    //         $disponibiliteRepository->add($disponibilite);
-    //         return $this->redirectToRoute('app_profil');
-    //     }
-
-    //     return $this->renderForm('profil/index.html.twig', [
-    //         'disponibilite' => $disponibilite,
-    //         'disponibiliteform' => $disponibiliteform,
-    //     ]);
-    // }
-
-
 }

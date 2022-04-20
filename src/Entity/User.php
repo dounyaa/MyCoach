@@ -58,6 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Disponibilite::class)]
     private $disponibilites;
 
+
     public function __construct()
     {
         $this->programme = new ArrayCollection();
@@ -100,8 +101,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // // guarantee every user at least has ROLE_USER
-        // $roles[] = 'ROLE_USER';
+        // guarantee every user at least has ROLE_USER
+        // $roles[] = '';
 
         return array_unique([$roles]);
     }

@@ -11,7 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Commentaire;
-
+use App\Entity\Promo;
+use App\Repository\PromoRepository;
 
 #[Route('/coachs')]
 class CoachsController extends AbstractController
@@ -34,7 +35,7 @@ class CoachsController extends AbstractController
     }
 
     #[Route('/{id}', methods: ['GET'], name: 'app_coachdeatail')]
-    public function coachDetail(int $id,Commentaire $commentaire=null): Response
+    public function coachDetail(int $id,Commentaire $commentaire=null, Request $request): Response
     {
         // detail
         $repoUser = $this->em->getRepository(User::class);
@@ -42,6 +43,7 @@ class CoachsController extends AbstractController
         $programmes = $coach->getProgramme();
 
         $commentaire = $coach->getCommentaire();
+        $this->addFlash('alert', 'Vous ne pouvez pas prendre un rendez-vous!');
 
         return $this->render('coachs/coachDetail.html.twig', [
             'coach' => $coach,

@@ -20,8 +20,8 @@ class DisponibiliteController extends AbstractController
     public function index(Security $security): Response
     {
         
-        if($this->denyAccessUnlessGranted('ROLE_COACH')){
-            return $this->redirectToRoute('denyAccess/404.html.twig');
+        if($this->denyAccessUnlessGranted("ROLE_COACH")){
+            return $this->redirectToRoute('index.php/_error/404');
         }
         $this->security = $security;
         $coach = $this->security->getUser();
@@ -62,8 +62,7 @@ class DisponibiliteController extends AbstractController
     public function detail($id, Security $security,Request $request, Disponibilite $disponibilite, DisponibiliteRepository $disponibiliteRepository): Response
     {
         $this->security = $security;
-        $coach = $this->security->getUser();
-
+        
         if ($request->request->get('detail') > 0) {
             $disponibilite = $disponibiliteRepository->findOneBy(['id'=>$id]);
             $user = $disponibilite->getUser();

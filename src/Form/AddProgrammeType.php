@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AddProgrammeType extends AbstractType
 {
@@ -21,7 +23,8 @@ class AddProgrammeType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'placeholder' => 'Titre',
-                ]
+                ],
+                
             ])
             ->add('description', TextareaType::class,[
                 'label' => false,
@@ -33,7 +36,9 @@ class AddProgrammeType extends AbstractType
                 'required' => false,
                 'label' => false,
                 'attr' => [
-                ]
+                ],
+                'data_class' => null,
+                
             ])
             ->add('categorie', ChoiceType::class, [
                 'label' => false,
@@ -46,11 +51,16 @@ class AddProgrammeType extends AbstractType
                 ],
                 'attr' => [
                     'placeholder' => 'Categorie',
-                ]
+                ],
+                'required' => true,
             ])
             ->add('contenu', CKEditorType::class,[
                 'label' => false,
                 'attr' => [
+                ],
+                'required' => true,
+                'constraints'=>[
+                    new NotBlank(),
                 ]
             ])
         ;

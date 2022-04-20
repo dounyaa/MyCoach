@@ -8,6 +8,10 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-lg-8 p-0">
+                {% if disponibilites|length == 0 %}
+                    <h2 style="color: white;">Vous avez aucune Disponibilité pour le moment. </h2>
+                    <p class="mt-4"> Cliquez sur la bouton "AJOUTER" pour ajouté votre premiere Disponibilité !</p>
+                {% endif %}
                 {% for disponibilite in disponibilites %}
                     <div class="blog-item">
                         <div class="bi-text">
@@ -28,10 +32,6 @@
                             {% endif %}
                         </div>
                     </div>
-                {% else %}
-                <div class="mb-5 wow fadeIn">
-                    <h2>no records found</h2>
-                </div>
                 {% endfor %}
                 </div>
                 

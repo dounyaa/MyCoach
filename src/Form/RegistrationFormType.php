@@ -43,22 +43,14 @@ class RegistrationFormType extends AbstractType
                     'name' => 'class',
                     'placeholder' => 'Vous etes',
                 ],
-                // 'disabled' => "disabled",
-                // 'selected' => "selected",
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,
                 'choices' => [
-                    'Client' => 'ROLE_CLIENT',
-                    'Coach' => 'ROLE_COACH'
+                    'Client' => "ROLE_CLIENT",
+                    'Coach' => "ROLE_COACH"
                 ]
             ])
-            // ->add('image', FileType::class, [
-            //     'attr' => [
-            //         'class' => 'input--style-2'
-            //     ],
-            //     'required' => false,
-            // ])
             ->add('email', EmailType::class, [
                 'label' => false,
                 'attr' => [
@@ -67,8 +59,6 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'label' => false,
                 'mapped' => false,
                 'attr' => [
@@ -78,12 +68,11 @@ class RegistrationFormType extends AbstractType
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Veuillez entrer un mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
+                        'minMessage' => 'Votre mot de passe doit comporter au moins {{ limit }} caractères',
                         'max' => 4096,
                     ]),
                 ],

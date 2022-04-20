@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb-text">
-                        <h2>Nouveau Programme</h2>
+                        <h2>Modifier Preogramme</h2>
                     </div>
                 </div>
             </div>
@@ -21,9 +21,6 @@
     <section class="contact-section spad">
         <div class="container">
             <div class="row">
-                {% if errors is not null and errors is not empty %}
-                    <p style="color:red;">{{ errors }}</p>
-                {% endif %}
                 <div class="col-lg-12">
                     <div class="leave-comment">
                         {{ form_start(form) }}
@@ -32,7 +29,7 @@
                             {{ form_row(form.image) }}
                             {{ form_row(form.categorie) }}
                             {{ form_row(form.contenu) }}
-                            <button class="mt-4" type="submit">Valider</button>
+                            <button class="mt-4" type="submit">Confirmer</button>
                         {{ form_end(form) }}
                     </div>
                 </div>

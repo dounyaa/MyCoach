@@ -45,7 +45,11 @@
                             </div>
                             <div class="ab-item">
                                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                <a href="{{ path("app_rendezvous", {'id': coach.id})}}"><button class="primary-btn btn-normal appoinment-btn">Prendre un rendez-vous !</button></a>
+                                    {% if is_granted("ROLE_COACH") %}
+                                        <a href="" onClick="alert('Vous ne pouvez pas prendre un rendez-vous');"><button class="primary-btn btn-normal appoinment-btn">Prendre un rendez-vous !</button></a>
+                                    {% else %}
+                                        <a href="{{ path("app_rendezvous", {'id': coach.id})}}"><button class="primary-btn btn-normal appoinment-btn">Prendre un rendez-vous !</button></a>
+                                    {% endif %}
                                 {% else %}
                                 <a href="{{ path("app_login")}}"><button class="primary-btn btn-normal appoinment-btn">Prendre un rendez-vous !</button></a>
                                 {% endif %}

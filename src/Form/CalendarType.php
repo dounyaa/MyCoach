@@ -28,6 +28,12 @@ class CalendarType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ]
+            ])
+            ->add('canal', ChoiceType::class, [
+                'choices' => ['Zoom' => "Zoom", 'Skype' => "Skype", 'Google Meet' => 'Google Meet', 'Microsoft Teams' => "Microsoft Teams"],
+                'attr' => [
+                    'class' => 'form-control'
+                ]
             ]);
     }
 

@@ -96,36 +96,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
-    // public function findByProgramme(User $user, string $query)
-    // {
-    //     $programme = $user->getProgramme();
-    //     $qb = $this->createQueryBuilder('p');
-    //     $qb
-    //         ->where(
-    //             $qb->expr()->andX(
-    //                 $qb->expr()->orX(
-    //                     $qb->expr()->like('p.nom', ':query'),
-    //                     $qb->expr()->like('p.description', ':query'),
-    //                 ),
-    //             )
-    //         )
-    //         ->setParameter('query', '%' . $query . '%')
-    //     ;
-    //     return $qb
-    //         ->getQuery()
-    //         ->getResult();
-    // }
-
-    // public function findByName(string $query)
-    // {
-    //     return $this->createQueryBuilder('u')
-    //         ->andWhere('u.nom = :val')
-    //         ->setParameter('val', $query)
-    //         ->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
-
     public function findCoachs(string $role, String $ville = null, String $coaching = null)
     {
         $role = mb_strtoupper($role);
