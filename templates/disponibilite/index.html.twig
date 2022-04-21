@@ -1,42 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Disponibilite index{% endblock %}
+{% block title %}
+	Disponibilite index
+{% endblock %}
 
 {% block body %}
-
-<section class="blog-section spad">
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-lg-8 p-0">
-                {% if disponibilites|length == 0 %}
-                    <h2 style="color: white;">Vous avez aucune Disponibilité pour le moment. </h2>
-                    <p class="mt-4"> Cliquez sur la bouton "AJOUTER" pour ajouté votre premiere Disponibilité !</p>
-                {% endif %}
-                {% for disponibilite in disponibilites %}
-                    <div class="blog-item">
-                        <div class="bi-text">
-                            <h5><a href="">Rendez-vous de {{ disponibilite.duree }}</a></h5>
-                            <ul>
-                                <li>{{ disponibilite.date ? disponibilite.date|date('Y-m-d') : '' }}</li>
-                                <li>{{ disponibilite.date ? disponibilite.date|date('H:i:s') : '' }}</li>
-                                <li>{{ disponibilite.canal }}</li>
-                                <p>{{ disponibilite.etat }}</p>
-                            </ul>
-                            {% if disponibilite.etat | lower == "disponible" %}
-                                <a class="primary-btn btn-normal appoinment-btn" type="button" href="{{ path('app_calendar') }}">modifier</a>
-                            {% else %}
-                            <form method="post" action="{{ path('app_disponibilite_detail', {'id': disponibilite.id}) }}">
-                                <input type="hidden" name="detail" value="{{ disponibilite.id }}">
-                                <button class="primary-btn btn-normal appoinment-btn">Voir plus de detail</button>
-                            </form>                
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
+	<section class="blog-section spad">
+		<div class="container mt-5">
+			<div class="row">
+				<div class="col-lg-8 p-0">
+					{% if (disponibilites|length) == 0 %}
+						<h2 style="color: white;">
+							Vous avez aucune Disponibilité pour le moment.
+						</h2>
+						<p class="mt-4">
+							Cliquez sur la bouton "Ajouter Disponibilité" pour ajouté votre premiere Disponibilité !
+						</p>
+					{% endif %}
+					{% for disponibilite in disponibilites %}
+						<div class="blog-item">
+							<div class="bi-text">
+								<h5>
+									<a href="">Rendez-vous de {{ disponibilite.duree }}</a>
+								</h5>
+								<ul>
+									<li>{{ disponibilite.date ? disponibilite.date|date('Y-m-d') : '' }}</li>
+									<li>{{ disponibilite.date ? disponibilite.date|date('H:i:s') : '' }}</li>
+									<li>{{ disponibilite.canal }}</li>
+									<p>
+										{{ disponibilite.etat }}
+									</p>
+								</ul>
+								{% if (disponibilite.etat|lower) == 'disponible' %}
+									<a class="primary-btn btn-normal appoinment-btn"
+										type="button"
+										href="{{ path('app_calendar') }}">
+										modifier
+									</a>
+								{% else %}
+									<form method="post"
+										action="{{
+										path(
+											'app_disponibilite_detail',
+											{
+												id: disponibilite.id
+											}
+										)
+										}}">
+										<input type="hidden" name="detail" value="{{ disponibilite.id }}" />
+										<button class="primary-btn btn-normal appoinment-btn">Voir plus de detail</button>
+									</form>
+								{% endif %}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+                <div class="ml-5" >
+                <a class="primary-btn btn-normal appoinment-btn" href="{{path('app_calendar') }}" role="button">
+                    Ajouter Disponibilité
+                </a>
                 </div>
-                
-            </div>
-        </div>
-        <a class="primary-btn btn-normal appoinment-btn " type="button" href="{{ path('app_calendar') }}">Ajouter</a>
-    </section>
+			</div>
+		</div>
+	</section>
 {% endblock %}

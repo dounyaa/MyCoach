@@ -30,6 +30,8 @@ class CoachsController extends AbstractController
         $coachs = $users->findCoachs("ROLE_COACH", $ville, $coaching);
 
         return $this->render('coachs/index.html.twig', [
+            'selectVille' => $ville,
+            'selectCoaching' => $coaching,
             'coachs' => $coachs,
         ]);
     }

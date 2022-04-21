@@ -79,6 +79,8 @@
               $('#delete-btn').hide();
 
               $('form[name=calendar]').attr('action', '/calendrier');
+              $('#disponibilite_fieldset').removeAttr('disabled');
+
             },
           },
         },
@@ -87,7 +89,8 @@
           center: 'title',
           end: 'prev,next today myCustomButton',
         },
-        events: {{ data is not empty ? data | raw : '[]' | raw }},
+
+        events: {{ data is not empty ? data | raw : [] }},
 
         viewDidMount: function(info) {
           console.log("viewSkeletonRender");
@@ -124,6 +127,10 @@
           if(title.toLowerCase() == 'reservé')
           {
             $('#disponibilite_fieldset').attr('disabled', 'disabled');
+          }
+          else
+          {
+            $('#disponibilite_fieldset').removeAttr('disabled');
           }
 
           $('#myModal').modal('show');
