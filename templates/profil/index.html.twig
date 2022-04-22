@@ -39,28 +39,30 @@
                                     </div>
                                     </div>
                                     <!-- Form Row        -->
+                                    {% if is_granted("ROLE_COACH")%}
                                     <div class="row gx-3 mb-3">
                                         <!-- Form Group (organization name)-->
-                                        {% if user.roles == 'ROLE_CLIENT' %}
-                                            <div class="col-md-6">
-                                                {{ form_row(editInfoForm.coaching, { 'attr': {'class': 'hidden-row'} } )}}</div>
-                                        {% else %}
                                             <div class="col-md-6">
                                                 {{ form_row(editInfoForm.coaching)}}</div>
-                                        {% endif %}
                                             <!-- Form Group (location)-->
                                             <div class="col-md-6">
-                                        {{ form_row(editInfoForm.ville) }}</div>
+                                                {{ form_row(editInfoForm.ville) }}</div>
                                     </div>
-                                    <!-- Form Group (email address)-->
                                     <div class="mb-3">
-                                        {{ form_row(editInfoForm.email) }}
+                                        {{ form_row(editInfoForm.email) }}</div>
                                     </div>
-                                    <!-- Form Row-->
                                     <div class="row mb-3">
                                         <!-- Form Group (description)-->
                                         {{ form_row(editInfoForm.description) }}
                                     </div>
+                                    {% else %}
+                                    <div class="mb-3">
+                                        {{ form_row(editInfoForm.ville) }}
+                                        {{ form_row(editInfoForm.email) }}
+                                        {% do editInfoForm.coaching.setRendered() %}
+                                        {% do editInfoForm.description.setRendered() %}</div>
+                                    </div>
+                                    {% endif %}
                                     <!-- Save changes button-->
                                     <button class="primary-btn btn-normal appoinment-btn" type="submit">Enregistrer</button>
                                     {{ form_end(editInfoForm) }}
@@ -69,29 +71,10 @@
                     </div>
                 </div>
             </div>
-            {# <div class="map">
-                <div class="col-xl-12">
-                <div class="card mb-4">
-                    <div class="card-header">Disponibiliter</div>
-                    <div class="card-body">
-                        {{ form_start(disponibiliteform) }}
-                            <div class="row mb-3">
-                                {{ form_row(disponibiliteform.date) }}
-                            </div>
-                            <div class="row mb-3">
-                                {{ form_row(disponibiliteform.duree) }}
-                            </div>
-                            <div class="row mb-3">
-                                {{ form_row(disponibiliteform.canal) }}
-                            </div>
-                            <button class="btn btn-primary mt-3" type="submit">Enregistrer</button>
-                        {{ form_end(disponibiliteform) }}
-            </div> #}
         </div>
     </div>
-            </div>
-        </div>
-    </section>
-    <!-- Contact Section End -->
+</div>
+</div>
+</section>
 {% endblock %}
 

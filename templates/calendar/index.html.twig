@@ -1,45 +1,143 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Calendar index{% endblock %}
+{% block title %}
+
+{% endblock %}
 
 {% block body %}
-    <h1>Calendar index</h1>
+	<section class="class-timetable-section spad">
+		<div id="calendrier"></div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Description</th>
-                <th>All_day</th>
-                <th>Background_color</th>
-                <th>Border_color</th>
-                <th>Text_color</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for calendar in calendars %}
-            <tr>
-                <td>{{ calendar.id }}</td>
-                <td>{{ calendar.title }}</td>
-                <td>{{ calendar.start ? calendar.start|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ calendar.end ? calendar.end|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ calendar.backgroundColor }}</td>
-                <td>
-                    <a href="{{ path('app_calendar_show', {'id': calendar.id}) }}">show</a>
-                    <a href="{{ path('app_calendar_edit', {'id': calendar.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+		<!-- Modal -->
+		<div class="modal fade"
+			id="myModal"
+			tabindex="-1"
+			role="dialog"
+			aria-labelledby="exampleModalLongTitle"
+			aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					{{ form_start(form) }}
+            <fieldset id="disponibilite_fieldset">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                  Ajout/Modification de la disponibilité
+                </h5>
+                <button type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  onclick="$('#myModal').modal('toggle')">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <input type="hidden" name="calendar_id" id="calendar_id" />
+                {{ form_widget(form) }}
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                <button type="submit" class="btn btn-primary" id="delete-btn">Suprrimer</button>
+              </div>
+            </fieldset>
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
 
-    <a href="{{ path('app_calendar_new') }}">Create new</a>
+{% block javascripts %}
+	<script>
+		function convertDate(inputFormat) {
+      function pad(s) {
+        return s < 10 ? '0' + s : s
+      }
+
+      var d = new Date(inputFormat)
+      return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-')
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      let calendarElt = document.querySelector('#calendrier')
+
+      let calendar = new FullCalendar.Calendar(calendarElt, {
+        customButtons: {
+          myCustomButton: {
+            text: 'Ajouter',
+            click: function () {
+              $('#calendar_id').val('')
+              $('#calendar_title').val('')
+
+              $('#calendar_date_date').val('')
+              $('#calendar_date_time_hour').val('')
+              $('#calendar_date_time_minute').val('')
+              
+              $('#calendar_duree').val('')
+
+              $('#myModal').modal('show')
+              $('#delete-btn').hide();
+
+              $('form[name=calendar]').attr('action', '/calendrier');
+              $('#disponibilite_fieldset').removeAttr('disabled');
+
+            },
+          },
+        },
+        headerToolbar: {
+          start: '',
+          center: 'title',
+          end: 'prev,next today myCustomButton',
+        },
+
+        events: {{ data is not empty ? data | raw : [] }},
+
+        viewDidMount: function(info) {
+          console.log("viewSkeletonRender");
+          calendarElt.querySelectorAll('.fc-button').forEach((button) => {
+            console.log(button);
+              button.classList.add('primary-btn', 'btn-normal', 'appoinment-btn');
+              button.classList.remove('fc-button', 'fc-button-primary');
+          });
+        },
+
+        eventClick: function (info) {
+          let id = info.event.id;
+          let title = info.event.title;
+          let start = info.event.start;
+          let duree = (info.event.end - info.event.start) / (1000 * 60);
+
+          $('#calendar_id').val(id);
+
+          if(start)
+          {
+            $('#calendar_date_date').val(convertDate(start))
+            $('#calendar_date_time_hour').val(start.getHours())
+            $('#calendar_date_time_minute').val(start.getMinutes())
+          }
+         
+          if(duree)
+          {
+            $('#calendar_duree option[value=' + duree + ']').attr('selected', 'selected');
+          }
+          
+          $('form[name=calendar]').attr('action', '/calendrier/' + id);
+          $('#delete-btn').attr('formaction', '/calendrier/' + id + '/delete');
+
+          if(title.toLowerCase() == 'reservé')
+          {
+            $('#disponibilite_fieldset').attr('disabled', 'disabled');
+          }
+          else
+          {
+            $('#disponibilite_fieldset').removeAttr('disabled');
+          }
+
+          $('#myModal').modal('show');
+        },
+      })
+
+      calendar.render();
+    });
+	</script>
 {% endblock %}

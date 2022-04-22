@@ -28,33 +28,6 @@ class DisponibiliteController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_disponibilite_edit')]
-    public function edit(Request $request, Disponibilite $disponibilite, DisponibiliteRepository $disponibiliteRepository): Response
-    {
-        $form = $this->createForm(DisponibiliteType::class, $disponibilite);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $disponibiliteRepository->add($disponibilite);
-            return $this->redirectToRoute('app_disponibilite_index');
-        }
-
-        return $this->renderForm('disponibilite/edit.html.twig', [
-            'disponibilite' => $disponibilite,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_disponibilite_delete', methods: ['POST'])]
-    public function delete(Request $request, Disponibilite $disponibilite, DisponibiliteRepository $disponibiliteRepository): Response
-    {
-        if ($request->request->get('delete') > 0) {
-            $disponibiliteRepository->remove($disponibilite);
-        }
-
-        return $this->redirectToRoute('app_disponibilite_index');
-    }
-
     #[Route('/{id}/detail', name: 'app_disponibilite_detail')]
     public function detail($id, Security $security,Request $request, Disponibilite $disponibilite, DisponibiliteRepository $disponibiliteRepository): Response
     {
