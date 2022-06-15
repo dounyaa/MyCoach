@@ -11,8 +11,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Commentaire;
-use App\Entity\Promo;
-use App\Repository\PromoRepository;
 
 #[Route('/coachs')]
 class CoachsController extends AbstractController

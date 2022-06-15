@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Data\SearchData;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Query\QueryBuilder;
