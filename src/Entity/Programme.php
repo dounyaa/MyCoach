@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProgrammeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProgrammeRepository::class)]
@@ -30,6 +32,17 @@ class Programme
 
     #[ORM\Column(type: 'string', length: 255)]
     private $categorie;
+
+    #[ORM\Column(type: 'integer')]
+    private $prix;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'programmes')]
+    private $acheteur;
+
+    public function __construct()
+    {
+        $this->acheteur = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +117,42 @@ class Programme
     public function setCategorie(string $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getPrix(): ?int
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(int $prix): self
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getAcheteur(): Collection
+    {
+        return $this->acheteur;
+    }
+
+    public function addAcheteur(User $acheteur): self
+    {
+        if (!$this->acheteur->contains($acheteur)) {
+            $this->acheteur[] = $acheteur;
+        }
+
+        return $this;
+    }
+
+    public function removeAcheteur(User $acheteur): self
+    {
+        $this->acheteur->removeElement($acheteur);
 
         return $this;
     }

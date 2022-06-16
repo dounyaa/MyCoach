@@ -3,11 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Disponibilite;
+use App\Entity\Payement;
 use App\Entity\User;
+use App\Form\PayementType;
 use App\Repository\DisponibiliteRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Security;
@@ -31,20 +35,47 @@ class RendezVousController extends AbstractController
     }
 
     #[Route('/reserver/{id}', name: 'app_rendezvous_reserver', methods: ['POST'])]
-    public function reserver(Request $request,Security $security, Disponibilite $disponibilite, DisponibiliteRepository $disponibiliteRepository): Response
+    public function reserver(Request $request, Disponibilite $disponibilite, DisponibiliteRepository $disponibiliteRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_CLIENT');
-        $this->security = $security;
-        $user = $this->security->getUser();
 
         if ($request->request->get('reserve') > 0) {
-            $disponibilite->setUser($user);
-            $disponibilite->setEtat('Reservé');
-            $disponibiliteRepository->add($disponibilite);
-            return $this->redirectToRoute('app_mes_rendezvous');
+            $payement = new Payement();
+            $form = $this->createForm(PayementType::class ,$payement);
+            $form->handleRequest($request);
+ 
+            return $this->render('rendez_vous/payement.html.twig',[
+                'form' => $form->createView(),
+                'disponibilite' => $disponibilite,
+            ]);        
         }
+        
+    }
 
-        return $this->redirectToRoute('app_mes_rendezvous');
+    #[Route('/reserver/{id}/payer', name: 'app_rendezvous_payer', methods: ['POST'])]
+    public function payer(Request $request, Security $security, Disponibilite $disponibilite, DisponibiliteRepository $disponibiliteRepository): Response
+    {
+            $this->denyAccessUnlessGranted('ROLE_CLIENT');
+            $this->security = $security;
+            $user = $this->security->getUser();
+            $payement = new Payement();
+            $form = $this->createForm(PayementType::class ,$payement);
+            $form->handleRequest($request);
+        
+            if ($form->isSubmitted() && $form->isValid()) {
+                $disponibilite->setUser($user);
+                $disponibilite->setEtat('Reservé');
+                $disponibiliteRepository->add($disponibilite);
+                $payement->setUser($user);
+                $this->em->persist($payement);
+                $this->em->persist($disponibilite);
+                $this->em->flush();
+
+                return $this->redirectToRoute('app_mes_rendezvous');    
+                
+            }
+
+        return $this->redirectToRoute('app_mes_rendezvous');   
     }
 
     #[Route('/mesrendezvous', name: 'app_mes_rendezvous')]

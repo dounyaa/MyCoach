@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Payement;
 use App\Entity\Programme;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,6 +11,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\AddProgrammeType;
+use App\Form\PayementType;
+use App\Repository\PayementRepository;
 use App\Repository\ProgrammeRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
@@ -23,6 +26,19 @@ class ProgrammeController extends AbstractController
     {
         $this->em = $em;
     }
+
+    // #[Route('/', name: 'app_progamme_filter')]
+    // public function filter (Request $request, ProgrammeRepository $programmeRepository)
+    // {
+    //     $programmes = [];
+    //     $filter = $request->query->get('filter', null);
+    //     $programmes = $programmeRepository->pricefilter($filter);
+
+    //     return $this->render('programme/index.html.twig', [
+    //         'selectfilter' => $filter,
+    //         'programmes' => $programmes,
+    //     ]);
+    // }
 
     #[Route('/add/{errors}', methods: ['GET'], name: 'app_add_programme')]
     public function addProgrammeShow(Request $request, String $errors = ""): Response
@@ -150,11 +166,84 @@ class ProgrammeController extends AbstractController
         ]);
     }
 
+    #[Route('/reserver/{id}', name: 'app_programme_reserver', methods: ['POST'])]
+    public function programmereserver(Request $request, Programme $programme): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_CLIENT');
+
+        if ($request->request->get('acheter') > 0) {
+            $form = $this->createForm(PayementType::class);
+            $form->handleRequest($request);
+ 
+            return $this->render('programme/payement.html.twig',[
+                'form' => $form->createView(),
+                'programme' => $programme
+            ]);        
+        }
+        
+    }
+    #[Route('/acheter/{id}', name: 'app_programme_acheter', methods: ['POST'])]
+    public function programmeacheter(Request $request, Security $security, Programme $programme, ProgrammeRepository $programmeRepository, PayementRepository $payementRepository): Response
+    {
+            $this->denyAccessUnlessGranted('ROLE_CLIENT');
+            $this->security = $security;
+            $user = $this->security->getUser();
+            $payement = $payementRepository->findOneBy(['user' => $user]);
+            
+            if($payementRepository->findOneBy(['user' => $user]))
+            {
+                $form = $this->createForm(PayementType::class ,$payement);
+                $form->handleRequest($request);
+            
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $programme->addAcheteur($user);
+                    $programmeRepository->add($programme);
+                    $payement->setUser($user);
+                    $this->em->flush();
+
+                    return $this->redirectToRoute('app_mesprogrammes');    
+                
+                }
+            }
+            else{
+                $payement = new Payement();
+                dd($payement);
+                $form = $this->createForm(PayementType::class ,$payement);
+                $form->handleRequest($request);
+            
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $programme->addAcheteur($user);
+                    $programmeRepository->add($programme);
+                    $payement->setUser($user);
+                    $this->em->persist($payement);
+                    $this->em->flush();
+    
+                    return $this->redirectToRoute('app_mesprogrammes');    
+                    
+                }
+            }
+
+        return $this->redirectToRoute('app_mesprogrammes');   
+    }
+
+    #[Route('/mesprogrammes', name: 'app_mesprogrammes')]
+    public function mesprogrammes (Security $security): Response
+    {
+            $this->denyAccessUnlessGranted('ROLE_CLIENT');
+            $this->security = $security;
+            $user = $this->security->getUser();
+            $programmes = $user->getProgrammes();
+
+            return $this->render('programme/mesprogrammes.html.twig', [
+                'programmes' => $programmes
+            ]);
+             
+    }
     #[Route('/{categorie}', name: 'app_programme')]
-    public function index(Security $security, $categorie = ''): Response
+    public function index(Request $request, Security $security, $categorie = ''): Response
     {
         $repo = $this->em->getRepository(Programme::class);
-
+        $filter = $request->query->get('filter', null);
         $isMesProgrammes = ($categorie == 'moi');
 
         $programmes = array();
@@ -169,6 +258,10 @@ class ProgrammeController extends AbstractController
             $programmes = $repo->findBy(array('categorie' => $categorie));
         }
 
+        if ($request->query->get('filter', null)) {
+            $programmes = $repo->pricefilter($filter);
+        }
+        
         $categories = array();
         foreach ($programmes as $programme) {
             $programmeCategory = $programme->getCategorie();
@@ -186,7 +279,8 @@ class ProgrammeController extends AbstractController
         return $this->render('programme/index.html.twig', [
             'programmes' => $programmes,
             'isMesProgrammes' => $isMesProgrammes,
-            'categories' => $categoriesCompteur
+            'categories' => $categoriesCompteur,
+            'selectfilter' => $filter,
         ]);
     }
 

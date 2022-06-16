@@ -58,6 +58,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'coach', targetEntity: Disponibilite::class)]
     private $disponibilites;
 
+    #[ORM\Column(type: 'decimal', precision: 10, scale: '0', nullable: true)]
+    private $prix;
+
+    #[ORM\ManyToMany(targetEntity: Programme::class, mappedBy: 'acheteur')]
+    private $programmes;
+
 
     public function __construct()
     {
@@ -65,6 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->commentaire = new ArrayCollection();
         $this->rendezvous = new ArrayCollection();
         $this->disponibilites = new ArrayCollection();
+        $this->programmes = new ArrayCollection();
     }
 
 
@@ -328,6 +335,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function getPrix(): ?string
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(?string $prix): self
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Programme>
+     */
+    public function getProgrammes(): Collection
+    {
+        return $this->programmes;
     }
 
 }

@@ -78,6 +78,7 @@
 						{% endif %}
 
 						{% if is_granted('ROLE_CLIENT') %}
+							<li><a href="{{ path('app_mesprogrammes') }}">Mes programmes</a></li>
 							<li><a href="{{ path('app_mes_rendezvous') }}">Mes rendez-vous</a></li>
 						{% endif %}
 					{% endif %}
@@ -114,6 +115,7 @@
 									{% endif %}
 
 									{% if is_granted('ROLE_CLIENT') %}
+										<li><a href="{{ path('app_mesprogrammes') }}">Mes programmes</a></li>
 										<li><a href="{{ path('app_mes_rendezvous') }}">Mes rendez-vous</a></li>
 									{% endif %}
 								{% endif %}

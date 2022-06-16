@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RendezVousController!{% endblock %}
+
+{% block body %}
+    <section class="blog-section spad">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-8 p-0">
+                    <div class="blog-item">
+                        <div class="bi-text">
+                            <h5><a href="">Payement</a></h5>
+                            {# <form method="post" action="{{ path('app_rendezvous_payer', {'id': disponibilite.id})  }}" onsubmit="return confirm('Êtes-vous sûr de vouloir payer la réservation de ce rendez-vous ?');">
+                                <input type="hidden" name="reserve" value="{{ disponibilite.id }}"> #}
+                            {{ form_start(form, {'action': path('app_rendezvous_payer', {'id': disponibilite.id} )}) }}
+                                {{ form_row(form.numero) }}
+                                {{ form_row(form.date) }}
+                                {{ form_row(form.code) }}
+                                <button class="primary-btn btn-normal appoinment-btn" type="submit">payer</button>
+                            {{ form_end(form) }}
+                        {# </form> #}
+                        </div>
+                    </div>
+                </div>
+{% endblock %}

@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -61,6 +62,12 @@ class AddProgrammeType extends AbstractType
                 'required' => true,
                 'constraints'=>[
                     new NotBlank(),
+                ]
+            ])
+            ->add('prix', NumberType::class,[
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Prix en €',
                 ]
             ])
         ;

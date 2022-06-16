@@ -73,4 +73,15 @@ class ProgrammeRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    
+    public function pricefilter($filter)
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.prix', $filter)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
 }
